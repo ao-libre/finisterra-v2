@@ -21,3 +21,67 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+### Operating System ###
+.DS_Store
+
+### Project-Specific ###
+private/
+build/
+desktop/*.tar.gz
+desktop/*.zip
+desktop/jdk*
+desktop/Config.json
+desktop/Screenshots*
+desktop/error*
+server/Accounts/
+server/[Cc]har[Ff]iles/
+server/bundled-APP/
+server/Charfile/
+out/
+**/out/
+desktop/Config.json
+*.log
+
+### Gradle ###
+.gradle/
+**/gradle.properties
+
+### Eclipse ###
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+.externalToolBuilders/
+*.launch
+*.pydevproject
+.cproject
+.autotools
+.factorypath
+.buildpath
+.target
+.tern-project
+.texlipse
+.springBeans
+.recommenders/
+.apt_generated/
+.cache-main
+.scala_dependencies
+.worksheet
+.project
+.classpath
+.apt_generated
+.sts4-cache/
+
+### Intellij ###
+*.iws
+.idea/
+*.iml
+*.ipr
