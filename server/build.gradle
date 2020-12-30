@@ -7,8 +7,6 @@ dependencies {
 	implementation project(':shared')
 }
 
-sourceSets.main.java.srcDirs += 'test'
-
 jar {
 	archiveBaseName = "${appName}-server"
 	dependsOn configurations.runtimeClasspath

@@ -3,11 +3,8 @@ buildscript {
 		mavenLocal()
 		mavenCentral()
 		google()
-		maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 		jcenter()
-	}
-	dependencies {
-
+		maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 	}
 }
 
@@ -16,36 +13,39 @@ allprojects {
 	apply plugin: 'idea'
 }
 
-configure(subprojects) {
-	apply plugin: 'java-library'
-	sourceCompatibility = 15.0
-
-	compileJava {
-		options.incremental = true
-	}
-}
-
 subprojects {
-	version = '0.0.1-SNAPSHOT'
-	ext.appName = 'finisterra'
+	apply plugin: 'java-library'
+	
+	sourceCompatibility = 15.0
+	
+	// Variables que estarán expuestas a todos los subproyectos.
+	ext {
+        appName = 'Finisterra'
+        version = '0.0.1-SNAPSHOT'
 
+        // Control global de las versiones de las dependencias.
+        gdxVersion = '1.9.10'   //Graphic Engine Library.
+    }
+
+	// Configuraciones del compilador Java
+    tasks.withType(JavaCompile) {
+	    options.encoding = "UTF-8"
+	    options.incremental = true
+	    //options.compilerArgs << '-Xlint:unchecked'
+	    //options.deprecation = true
+    }
+	
 	repositories {
 		mavenLocal()
 		mavenCentral()
+		jcenter()
 		maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 		maven { url 'https://jitpack.io' }
-		jcenter()
 	}
 }
 
-def javaProjects() {
-	subprojects.findAll { project ->
-		project.plugins.hasPlugin('java')
-	}
+configure(subprojects.findAll { it.plugins.hasPlugin('java') }) {
+	sourceSets.main.java.srcDirs = ['main', 'test']
 }
 
-configure(javaProjects()) {
-	sourceSets.main.java.srcDirs = ['main']
-}
-
-eclipse.project.name = 'finisterra' + '-parent'
+eclipse.project.name = 'finisterra-parent'
