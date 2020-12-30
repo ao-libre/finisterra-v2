@@ -1,0 +1,35 @@
+apply plugin: 'application'
+
+dependencies {
+	api "com.badlogicgames.gdx:gdx:$gdxVersion"
+	api "com.badlogicgames.box2dlights:box2dlights:$box2dlightsVersion"
+	api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+	api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+	api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+	api "net.onedaybeard.artemis:artemis-odb:$artemisOdbVersion"
+	api "com.strongjoshua:libgdx-inGameConsole:$inGameConsoleVersion"
+	api "com.github.crykn:kryonet:$kryoNetVersion"
+	implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+	implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+	implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+	implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+	api project(':shared')
+}
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+sourceSets.main.resources.srcDirs += [ rootProject.file('assets').path ]
+eclipse.project.name = appName + '-client'
+
+mainClassName = 'Launcher'
+
+import org.gradle.internal.os.OperatingSystem
+
+run {
+	workingDir = rootProject.file('assets').path
+	setIgnoreExitValue(true)
+
+	if (OperatingSystem.current() == OperatingSystem.MAC_OS) {
+		// Required to run LWJGL3 Java apps on MacOS
+		jvmArgs += "-XstartOnFirstThread"
+	}
+}

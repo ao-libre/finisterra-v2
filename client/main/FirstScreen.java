@@ -1,5 +1,3 @@
-package org.aolibre;
-
 import com.badlogic.gdx.Screen;
 
 /** First screen of the application. Displayed after the application is created. */

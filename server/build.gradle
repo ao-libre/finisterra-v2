@@ -1,12 +1,13 @@
 apply plugin: 'application'
 
-sourceCompatibility = 15.0
-mainClassName = 'org.aolibre.server.ServerLauncher'
+mainClassName = 'Launcher'
 eclipse.project.name = appName + '-server'
 
 dependencies {
 	implementation project(':shared')
 }
+
+sourceSets.main.java.srcDirs += 'test'
 
 jar {
 	archiveBaseName = "${appName}-server"

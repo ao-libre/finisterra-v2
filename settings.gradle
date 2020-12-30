@@ -1,1 +1,4 @@
-include 'core', 'server', 'lwjgl3', 'headless', 'shared'
+include 'client', 'server', 'shared', 'server:components', 'client:components', 'shared:components'
+findProject(':server:components')?.name = 'components'
+findProject(':client:components')?.name = 'components'
+findProject(':shared:components')?.name = 'components'

@@ -19,6 +19,7 @@ allprojects {
 configure(subprojects) {
 	apply plugin: 'java-library'
 	sourceCompatibility = 15.0
+
 	compileJava {
 		options.incremental = true
 	}
@@ -27,6 +28,7 @@ configure(subprojects) {
 subprojects {
 	version = '0.0.1-SNAPSHOT'
 	ext.appName = 'finisterra'
+
 	repositories {
 		mavenLocal()
 		mavenCentral()
@@ -34,6 +36,16 @@ subprojects {
 		maven { url 'https://jitpack.io' }
 		jcenter()
 	}
+}
+
+def javaProjects() {
+	subprojects.findAll { project ->
+		project.plugins.hasPlugin('java')
+	}
+}
+
+configure(javaProjects()) {
+	sourceSets.main.java.srcDirs = ['main']
 }
 
 eclipse.project.name = 'finisterra' + '-parent'
