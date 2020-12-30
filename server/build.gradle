@@ -1,0 +1,18 @@
+apply plugin: 'application'
+
+sourceCompatibility = 15.0
+mainClassName = 'org.aolibre.server.ServerLauncher'
+eclipse.project.name = appName + '-server'
+
+dependencies {
+	implementation project(':shared')
+}
+
+jar {
+	archiveBaseName = "${appName}-server"
+	dependsOn configurations.runtimeClasspath
+	from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } } 
+	manifest {
+		attributes 'Main-Class': project.mainClassName
+	}
+}
