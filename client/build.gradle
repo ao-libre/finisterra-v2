@@ -1,19 +1,26 @@
 apply plugin: 'application'
+apply plugin: "artemis"
+apply plugin: "artemis-fluid"
 
 dependencies {
-	api "com.badlogicgames.gdx:gdx:$gdxVersion"
-	api "com.badlogicgames.box2dlights:box2dlights:$box2dlightsVersion"
-	api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-	api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-	api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
-	api "net.onedaybeard.artemis:artemis-odb:$artemisOdbVersion"
-	api "com.strongjoshua:libgdx-inGameConsole:$inGameConsoleVersion"
-	api "com.github.crykn:kryonet:$kryoNetVersion"
+	implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+	implementation "com.badlogicgames.box2dlights:box2dlights:$box2dlightsVersion"
+	implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+	implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+	implementation "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+	implementation "net.onedaybeard.artemis:artemis-odb:$artemisOdbVersion"
+	implementation "com.strongjoshua:libgdx-inGameConsole:$inGameConsoleVersion"
+//	implementation "com.github.crykn:kryonet:$kryoNetVersion"
 	implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
 	implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 	implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
 	implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-	api project(':shared')
+	implementation 'com.google.code.gson:gson:2.8.6'
+	implementation "net.onedaybeard.artemis:artemis-odb:$artemisVersion"
+	implementation "net.onedaybeard.artemis:artemis-fluid-core:$artemisVersion"
+	implementation project(':shared')
+	api project(':client:components')
+	api project(':shared:shared-components')
 }
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
@@ -21,6 +28,29 @@ sourceSets.main.resources.srcDirs += [ rootProject.file('assets').path ]
 eclipse.project.name = appName + '-client'
 
 mainClassName = 'Launcher'
+
+ext {
+	fluidOutputDir = file("$buildDir/generated-sources/fluid/")
+}
+
+sourceSets.main.java.srcDirs = ['main', fluidOutputDir]
+
+// artemis-odb: weaving settings.
+weave {
+	classesDir = new File(buildDir, "classes/java/main")
+	enableArtemisPlugin = true
+	enablePooledWeaving = true
+	generateLinkMutators = true
+	optimizeEntitySystems = true
+}
+
+fluid {
+	generatedSourcesDirectory = fluidOutputDir
+	classpath = sourceSets.main.compileClasspath
+}
+fluid.dependsOn(':shared:classes')
+compileJava.dependsOn fluid
+classes.finalizedBy weave
 
 import org.gradle.internal.os.OperatingSystem
 
@@ -32,4 +62,86 @@ run {
 		// Required to run LWJGL3 Java apps on MacOS
 		jvmArgs += "-XstartOnFirstThread"
 	}
+	main = project.mainClassName
+	classpath = sourceSets.main.runtimeClasspath
+	standardInput = System.in
+}
+
+// Get current Operating System
+def OS = OperatingSystem.current()
+
+if (OS.isMacOsX()) {
+	run {
+		jvmArgs += '-XstartOnFirstThread'
+	}
+}
+
+task dist(type: Jar) {
+	dependsOn classes
+	from files(sourceSets.main.output.classesDirs)
+
+	manifest {
+		attributes 'Main-Class': project.mainClassName
+	}
+
+	doLast {
+		copy {
+			from configurations.compileClasspath
+			into("$buildDir/libs")
+		}
+	}
+
+}
+
+run.dependsOn(classes)
+
+// Determine where the bundled application is going to be.
+def releasePath = "${buildDir}/releases"
+
+// Short-named variable that represents where the Assets are.
+def assetsPath = sourceSets.main.resources.srcDirs[0].path
+
+// creates application bundle (executable + runtime)
+task bundle(type: Exec, dependsOn: [dist, jlink]) {
+
+	// Overwrite previous bundled application.
+	if (file(releasePath).exists()) {
+		delete(file(releasePath))
+	} else {
+		file(releasePath).mkdirs()
+	}
+
+	def commands = [
+			JPackagePath,
+			'--type', 'app-image',
+			'--name', project.appName,
+			'--vendor', "Argentum Online Libre",
+			'--app-version', "1.15.0",
+			'--dest', releasePath,
+			'--runtime-image', prebuiltJRE,
+			'--input', "${buildDir}/libs",
+			'--main-class', project.mainClassName,
+			'--main-jar', "${project.name}-${project.version}.jar"
+	]
+
+	switch (OS) {
+		case OperatingSystem.MAC_OS:
+			commands << "--java-options"
+			commands << "-XstartOnFirstThread"
+			break
+		case OperatingSystem.WINDOWS:
+			break
+		case OperatingSystem.LINUX:
+			break
+	}
+
+	commandLine = commands
+
+}
+
+task packageDistribution(type: Zip, dependsOn: [bundle]) {
+	archiveFileName = "finisterra-client-".concat((OS.isMacOsX() ? "MacOS" : OS.isLinux() ? "Linux" : "Windows")).concat(".zip")
+	destinationDirectory = file("${project.buildDir}/releases/")
+
+	from "${releasePath}/${project.appName}".concat(OS.isMacOsX() ? ".app" : "")
 }

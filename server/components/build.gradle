@@ -1,16 +1,6 @@
-plugins {
-    id 'java'
-}
-
-repositories {
-    mavenCentral()
-}
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+sourceSets.main.java.srcDirs = ['server']
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-}
-
-test {
-    useJUnitPlatform()
+    api group: "net.onedaybeard.artemis", name: "artemis-odb", version: "$artemisVersion"
 }
