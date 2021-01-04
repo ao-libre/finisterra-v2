@@ -4,7 +4,8 @@ buildscript {
 		mavenCentral()
 		google()
 		jcenter()
-		maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+		maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+		maven { url "https://plugins.gradle.org/m2/" }
 	}
 }
 
@@ -24,7 +25,7 @@ subprojects {
         version = '0.0.1-SNAPSHOT'
 
         // Control global de las versiones de las dependencias.
-        gdxVersion = '1.9.10'   //Graphic Engine Library.
+        gdxVersion = '1.9.12'   //Graphic Engine Library.
     }
 
 	// Configuraciones del compilador Java
@@ -40,6 +41,7 @@ subprojects {
 		mavenCentral()
 		jcenter()
 		maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+		maven { url "https://plugins.gradle.org/m2/" }
 		maven { url 'https://jitpack.io' }
 	}
 }
