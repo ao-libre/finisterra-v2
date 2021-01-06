@@ -1,9 +1,9 @@
-import org.gradle.internal.os.OperatingSystem
-
 plugins {
     id 'application'
     id 'artemis'
     id 'artemis-fluid'
+    id "com.github.johnrengelman.shadow" version "6.1.0"
+    id 'org.mikeneck.graalvm-native-image' version 'v1.0.0'
 }
 
 mainClassName = 'Launcher'
@@ -12,10 +12,10 @@ eclipse.project.name = appName + '-server'
 dependencies {
     api group: "net.onedaybeard.artemis", name: "artemis-odb", version: "$artemisVersion"
     api 'com.google.code.gson:gson:2.8.6'
-    implementation "net.onedaybeard.artemis:artemis-fluid-core:2.4.0-SNAPSHOT"
-    implementation project(':shared')
-    api project(':server:components')
-    api project(':shared:shared-components')
+    api "net.onedaybeard.artemis:artemis-fluid-core:2.4.0-SNAPSHOT"
+    api project(':shared')
+    implementation project(':server:components')
+    implementation project(':shared:shared-components')
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 }
@@ -29,24 +29,9 @@ ext {
 }
 
 sourceSets {
-    main.java.srcDirs = ['main', fluidOutputDir]
+    main.java.srcDirs = ['main', fluidOutputDir, project(':server:components').file('server'), project(':shared:shared-components').file('shared')]
+    main.resources.srcDirs = ['resources']
     test.java.srcDirs += ['test', 'main']
-}
-
-task printSourceSetInformation() {
-
-    doLast {
-        sourceSets.each { srcSet ->
-            println "[" + srcSet.name + "]"
-            print "-->Source directories: " + srcSet.allJava.srcDirs + "\n"
-            print "-->Output directories: " + srcSet.output.classesDirs.files + "\n"
-            print "-->Compile classpath:\n"
-            srcSet.compileClasspath.files.each {
-                print "  " + it.path + "\n"
-            }
-            println ""
-        }
-    }
 }
 
 fluid {
@@ -56,7 +41,8 @@ fluid {
 compileJava.dependsOn fluid
 
 weave {
-    classesDir = new File(buildDir, "classes/java/main")
+    classesDir = sourceSets.main.java.outputDir
+    dependsOn build
     enableArtemisPlugin = true
     enablePooledWeaving = true
     generateLinkMutators = true
@@ -75,75 +61,16 @@ idea {
     }
 }
 
-// Get current Operating System
-def OS = OperatingSystem.current()
-
-// Determine where the bundled application is going to be.
-def releasePath = "${buildDir}/releases"
-
-task dist(type: Jar) {
-    from files(sourceSets.main.output.classesDirs)
-    from files(sourceSets.main.output.resourcesDir)
-
-    manifest {
-        attributes 'Main-Class': mainClassName
+nativeImage {
+    graalVmHome = System.getProperty('java.home')
+    mainClass = 'Launcher'
+    classpath = shadowJar
+    executableName = 'finisterra-server'
+    outputDirectory = file("$buildDir/bin")
+    arguments {
+        add '--no-fallback'
+        add '--enable-all-security-services'
+        add '--report-unsupported-elements-at-runtime'
+        add '-H:ReflectionConfigurationFiles=./resources/reflect-config.json'
     }
-    doLast {
-        // We copy all the dependencies .JAR into the input folder for JPackage.
-        copy {
-            from configurations.compileClasspath
-            from configurations.runtimeClasspath
-            into "${buildDir}/libs"
-        }
-    }
-}
-
-
-// creates application bundle (executable + runtime)
-task bundle(type: Exec, dependsOn: [dist, jlink]) {
-
-    // Overwrite previous bundled application.
-    if (file(releasePath).exists()) {
-        delete(file(releasePath))
-    } else {
-        file(releasePath).mkdirs()
-    }
-
-    def commands = [
-            JPackagePath,
-            '--type', 'app-image',
-            '--name', project.appName,
-            '--vendor', "Argentum Online Libre",
-            '--app-version', "1.15.0",
-            '--dest', releasePath,
-            '--runtime-image', prebuiltJRE,
-            '--input', "${buildDir}/libs",
-            '--main-class', project.mainClassName,
-            '--main-jar', "${project.name}-${project.version}.jar"
-    ]
-
-    if (OS.isMacOsX()) {
-        commands << "--java-options"
-        commands << "-XstartOnFirstThread"
-    }
-
-    commandLine = commands
-
-}
-
-<<<<<<< HEAD
-jar {
-	archiveBaseName = "${appName}-server"
-	dependsOn configurations.runtimeClasspath
-	from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } } 
-	manifest {
-		attributes 'Main-Class': project.mainClassName
-	}
-=======
-task packageDistribution(type: Zip, dependsOn: [bundle]) {
-    archiveFileName = "finisterra-server-".concat((OS.isMacOsX() ? "MacOS" : OS.isLinux() ? "Linux" : "Windows")).concat(".zip")
-    destinationDirectory = file("${project.buildDir}/releases/")
-
-    from "${releasePath}/${project.appName}".concat(OS.isMacOsX() ? ".app" : "")
->>>>>>> feat: components as dependencies and track them using E instance
 }
