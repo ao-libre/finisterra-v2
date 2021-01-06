@@ -4,14 +4,16 @@ import com.artemis.Component;
 import com.artemis.annotations.PooledWeaver;
 
 import java.util.Collection;
+import java.util.List;
 
 @PooledWeaver
-public class EntityUpdateDTO extends Component{
+public class EntityUpdateDTO extends Component {
     private int entityId;
     private Class<? extends Component>[] toRemove;
     private Component[] toUpdate;
 
-    public EntityUpdateDTO() {}
+    public EntityUpdateDTO() {
+    }
 
     public EntityUpdateDTO(int entityId) {
         this.entityId = entityId;
@@ -28,10 +30,10 @@ public class EntityUpdateDTO extends Component{
     }
 
     public Collection<Class<? extends Component>> getToRemove() {
-        return java.util.List.of(toRemove);
+        return List.of(toRemove);
     }
 
     public Collection<Component> getToUpdate() {
-        return java.util.List.of(toUpdate);
+        return List.of(toUpdate);
     }
 }
