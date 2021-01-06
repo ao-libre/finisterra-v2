@@ -25,7 +25,7 @@ subprojects {
         version = '0.0.1-SNAPSHOT'
 
         // Control global de las versiones de las dependencias.
-        gdxVersion = '1.9.12'   //Graphic Engine Library.
+        gdxVersion = '1.9.13'   //Graphic Engine Library.
     }
 
 	// Configuraciones del compilador Java
