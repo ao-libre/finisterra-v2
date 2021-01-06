@@ -1,4 +1,5 @@
 eclipse.project.name = appName + '-shared'
 dependencies {
     api project(':shared:shared-components')
+    api group: "net.onedaybeard.artemis", name: "artemis-odb", version: "$artemisVersion"
 }

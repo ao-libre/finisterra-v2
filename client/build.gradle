@@ -1,6 +1,8 @@
-apply plugin: 'application'
-apply plugin: "artemis"
-apply plugin: "artemis-fluid"
+plugins {
+	id 'application'
+	id "artemis"
+	id "artemis-fluid"
+}
 
 dependencies {
 	implementation "com.badlogicgames.gdx:gdx:$gdxVersion"

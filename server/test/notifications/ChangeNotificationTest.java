@@ -61,12 +61,12 @@ public class ChangeNotificationTest {
     }
 
     private void whenModifyComponents() {
-        E(entityId).healthValue(10);
+        E(entityId).fooValue(1);
     }
 
     private void whenRemoveComponents() {
         E(entityId)
-                .sharedComponent(false)
+                .removeFoo()
                 .removeServerComponent();
     }
 
@@ -75,7 +75,7 @@ public class ChangeNotificationTest {
     }
 
     private void givenAnEntityWithModifiedComponents() {
-        E(entityId).removeHealth();
+        E(entityId).fooValue(1);
     }
 
     private void givenAChangeRegistry() {
@@ -84,7 +84,7 @@ public class ChangeNotificationTest {
 
     private void givenAnEntityWithComponents() {
         entityId = this.world.create();
-        E(entityId).serverComponent().sharedComponent();
+        E(entityId).serverComponent().foo();
     }
 
     private void givenAWorld() {

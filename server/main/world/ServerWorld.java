@@ -2,6 +2,7 @@ package world;
 
 import com.artemis.*;
 import system.ChangeNotifierSystem;
+import system.NetworkSystem;
 
 public class ServerWorld extends World {
 
@@ -17,6 +18,7 @@ public class ServerWorld extends World {
                     .with(new ChangeRegistry())
                     .with(new SuperMapper())
                     .with(new ChangeNotifierSystem())
+                    .with(new NetworkSystem())
                     .build();
         }
 
