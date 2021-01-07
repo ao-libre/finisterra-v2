@@ -1,5 +1,6 @@
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import game.AOGame;
 
 public class Launcher {
     public static void main(String[] args) {
