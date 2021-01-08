@@ -1,13 +1,12 @@
 package shared;
 
 import com.artemis.Component;
-import com.artemis.annotations.PooledWeaver;
+import com.artemis.PooledComponent;
 
 import java.util.Collection;
 import java.util.List;
 
-@PooledWeaver
-public class EntityUpdateDTO extends Component {
+public class EntityUpdateDTO extends PooledComponent {
     private int entityId;
     private Class<? extends Component>[] toRemove;
     private Component[] toUpdate;
@@ -35,5 +34,12 @@ public class EntityUpdateDTO extends Component {
 
     public Collection<Component> getToUpdate() {
         return List.of(toUpdate);
+    }
+
+    @Override
+    protected void reset() {
+        entityId = 0;
+        toRemove = null;
+        toUpdate = null;
     }
 }
