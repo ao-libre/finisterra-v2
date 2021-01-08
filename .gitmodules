@@ -1,3 +1,4 @@
 [submodule "artemis-odb"]
 	path = artemis-odb
 	url = https://github.com/guidota/artemis-odb.git
+	branch = develop
