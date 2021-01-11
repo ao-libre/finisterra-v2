@@ -10,12 +10,11 @@ mainClassName = 'Launcher'
 eclipse.project.name = appName + '-server'
 
 dependencies {
-    api group: "net.onedaybeard.artemis", name: "artemis-odb", version: "$artemisVersion"
-    api 'com.google.code.gson:gson:2.8.6'
-    api "net.onedaybeard.artemis:artemis-fluid-core:2.4.0-SNAPSHOT"
+    implementation "net.onedaybeard.artemis:artemis-fluid-core"
+    implementation group: "net.onedaybeard.artemis", name: "artemis-odb", version: "$artemisVersion"
     api project(':shared')
-    implementation project(':server:components')
-    implementation project(':shared:shared-components')
+    api project(':server:components')
+    api project(':shared:shared-components')
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 }
@@ -24,12 +23,11 @@ test {
     useJUnitPlatform()
 }
 
-ext {
-    fluidOutputDir = file("$buildDir/generated-sources/fluid/")
-}
+project.ext.weaveDir = new File("$buildDir/explodedForWeave")
+project.ext.fluidOutputDir = new File("$buildDir/generated-sources/fluid/")
 
 sourceSets {
-    main.java.srcDirs = ['main', fluidOutputDir, project(':server:components').file('server'), project(':shared:shared-components').file('shared')]
+    main.java.srcDirs = ['main', project.fluidOutputDir, project(':server:components').file('server'), project(':shared:shared-components').file('shared')]
     main.resources.srcDirs = ['resources']
     test.java.srcDirs += ['test', 'main']
 }
@@ -40,14 +38,22 @@ fluid {
 }
 compileJava.dependsOn fluid
 
+task explodeForWeave(type: Sync, dependsOn: classes) {
+    into project.weaveDir
+    from files(sourceSets.main.output.classesDirs)
+    from files(sourceSets.main.output.resourcesDir)
+    from {configurations.compile.collect {zipTree(it)}}
+}
+
 weave {
     classesDir = sourceSets.main.java.outputDir
-    dependsOn build
+    dependsOn explodeForWeave
     enableArtemisPlugin = true
     enablePooledWeaving = true
     generateLinkMutators = true
     optimizeEntitySystems = true
 }
+
 classes.finalizedBy(weave)
 // Help intellIJ pick up the generated classes.
 idea {
@@ -59,6 +65,18 @@ idea {
         excludeDirs += file("$buildDir/libs")
         excludeDirs += file("$buildDir/tmp")
     }
+}
+
+
+task dist(type: Jar, dependsOn: weave) {
+    from project.weaveDir
+    manifest {
+        attributes 'Main-Class': project.mainClassName
+    }
+}
+
+shadowJar {
+    from project.weaveDir
 }
 
 nativeImage {

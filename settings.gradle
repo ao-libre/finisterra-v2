@@ -7,3 +7,26 @@ includeBuild("artemis-odb") {
         substitute module('net.onedaybeard.artemis:artemis-odb-weaver') with project(':artemis-odb-weaver')
     }
 }
+
+def use = { ... names ->
+    for (String name : names) {
+        include(name)
+        project(name).projectDir = new File(settingsDir, "../${name.substring(1).replace(":", "/")}")
+    }
+}
+
+if (new File(settingsDir, '../Arc').exists()) {
+    use(
+            ':Arc',
+            ':Arc:arc-core',
+            ':Arc:extensions',
+            ':Arc:extensions:freetype',
+            ':Arc:extensions:recorder',
+            ':Arc:extensions:arcnet',
+            ':Arc:natives',
+            ':Arc:natives:natives-desktop',
+            ':Arc:backends',
+            ':Arc:backends:backend-sdl',
+            ':Arc:backends:backend-headless'
+    )
+}

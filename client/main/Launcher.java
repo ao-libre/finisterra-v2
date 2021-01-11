@@ -1,16 +1,18 @@
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import arc.backend.sdl.SdlApplication;
+import arc.backend.sdl.SdlConfig;
 import game.AOGame;
 
 public class Launcher {
     public static void main(String[] args) {
-        new Lwjgl3Application(new AOGame(), getDefaultConfiguration());
-    }
+        AOGame game = new AOGame();
+        SdlConfig config = new SdlConfig();
+        config.title = "Finisterrax";
+//        config.decorated = false;
+        config.gl30 = false;
+        config.vSyncEnabled = false;
+        config.stencil = 1;
+        config.maximized = true;
 
-    private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
-        Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
-        configuration.setTitle("finisterra");
-        configuration.setWindowedMode(640, 480);
-        return configuration;
+        new SdlApplication(game, config);
     }
 }

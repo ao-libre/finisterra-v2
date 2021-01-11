@@ -1,31 +1,39 @@
 package screens;
 
-import game.GameContext;
+import arc.Core;
+import arc.Events;
+import arc.scene.Scene;
+import arc.scene.ui.layout.Table;
+import events.EventType;
 
-import static screens.ScreenEvent.*;
+public class LoadingScreen extends Screen {
+    Scene scene;
 
-public class LoadingScreen extends ContextScreen {
+    public LoadingScreen() {
+        scene = new Scene();
+        Table table = new Table();
+        scene.add(table);
+    }
 
-	public LoadingScreen(GameContext context) {
-		super(context);
-	}
+    @Override
+    public void loadSync() {
+        // @todo load assets for this screen
+    }
 
-	@Override
-	public void show() {
-		getContext().fire(LOADING_START);
-		// load getContext().getAssetManager();
-	}
+    @Override
+    public void init() {
+        Events.fire(EventType.Loading.STARTED);
+        Core.scene = scene;
+        load();
+    }
 
-	@Override
-	public void render(float delta) {
-		super.render(delta);
-		if (getContext().getAssetManager().update()) {
-			getContext().fire(LOADING_FINISH);
-		}
-	}
+    private void load() {
+    }
 
-	@Override
-	public void dispose() {
-		// TODO
-	}
+    @Override
+    public void update() {
+        if (Core.assets.update()) {
+            Events.fire(EventType.Loading.FINISHED);
+        }
+    }
 }
