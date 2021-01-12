@@ -1,10 +1,10 @@
 include 'client', 'server', 'shared', 'server:components', 'client:components', 'shared:components'
 findProject(':shared:components')?.name = 'shared-components'
 
-includeBuild("artemis-odb") {
-    dependencySubstitution {
-        substitute module('net.onedaybeard.artemis:artemis-fluid-core') with project(':artemis-fluid-core')
-        substitute module('net.onedaybeard.artemis:artemis-odb-weaver') with project(':artemis-odb-weaver')
+sourceControl {
+    gitRepository("https://github.com/guidota/artemis-odb.git") {
+        producesModule("net.onedaybeard.artemis:artemis-fluid-core")
+        producesModule("net.onedaybeard.artemis:artemis-odb-weaver")
     }
 }
 
