@@ -1,53 +1,118 @@
+import org.gradle.internal.jvm.Jvm
+
 buildscript {
-	repositories {
-		mavenLocal()
-		mavenCentral()
-		google()
-		jcenter()
-		maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-		maven { url "https://plugins.gradle.org/m2/" }
-	}
+    ext {
+        artemisVersion = '2.4.0-SNAPSHOT'
+        prebuiltJRE = "${project.buildDir}/bundled-JRE"
+    }
+    repositories {
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url "https://plugins.gradle.org/m2/" }
+        jcenter()
+    }
+
+    dependencies {
+        classpath "net.onedaybeard.artemis:artemis-odb-gradle-plugin:2.3.0"
+        classpath "net.onedaybeard.artemis:artemis-fluid-gradle-plugin:2.3.0"
+    }
 }
 
 allprojects {
-	apply plugin: 'eclipse'
-	apply plugin: 'idea'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+
+    group = 'Finisterra'
+    ext {
+        appName = 'Finisterra'
+        artemisVersion = '2.3.0'
+    }
+    repositories {
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url "https://plugins.gradle.org/m2/" }
+        jcenter()
+    }
 }
 
 subprojects {
-	apply plugin: 'java-library'
-	
-	sourceCompatibility = 15.0
-	
-	// Variables que estarán expuestas a todos los subproyectos.
-	ext {
-        appName = 'Finisterra'
-        version = '0.0.1-SNAPSHOT'
+    version = '0.0.1-SNAPSHOT'
+    ext.appName = 'finisterra'
+    apply plugin: 'java-library'
+    sourceSets.main.java.srcDirs = ['main']
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 
-        // Control global de las versiones de las dependencias.
-        gdxVersion = '1.9.13'   //Graphic Engine Library.
+    compileJava {
+        options.incremental = true
     }
 
-	// Configuraciones del compilador Java
+// Configuraciones del compilador Java
     tasks.withType(JavaCompile) {
-	    options.encoding = "UTF-8"
-	    options.incremental = true
-	    //options.compilerArgs << '-Xlint:unchecked'
-	    //options.deprecation = true
+        options.encoding = "UTF-8"
+        //options.compilerArgs << '-Xlint:unchecked'
+        //options.deprecation = true
     }
-	
-	repositories {
-		mavenLocal()
-		mavenCentral()
-		jcenter()
-		maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
-		maven { url "https://plugins.gradle.org/m2/" }
-		maven { url 'https://jitpack.io' }
-	}
+
+// Configuracion de resolucion de dependencias.
+    configurations.all {
+        resolutionStrategy {
+            // fail eagerly on version conflict (includes transitive dependencies)
+            // e.g. multiple different versions of the same dependency (group and name are equal)
+            failOnVersionConflict()
+
+            // prefer modules that are part of this build (multi-project or composite build) over external modules
+            preferProjectModules()
+
+            // cache dynamic versions for 10 minutes
+            cacheDynamicVersionsFor 10 * 60, 'seconds'
+
+            // don't cache changing modules at all
+            cacheChangingModulesFor 0, 'seconds'
+        }
+
+    }
 }
 
-configure(subprojects.findAll { it.plugins.hasPlugin('java') }) {
-	sourceSets.main.java.srcDirs = ['main', 'test']
+configure(subprojects.findAll { it.name == 'server' || it.name == 'client' }) {
+    ext {
+        jdkPath = Jvm.current().getJavaHome().path
+        JPackagePath = jdkPath.concat("/bin/jpackage")
+    }
+
+    // creates a replacement runtime via jlink command (much smaller than JPackage. Up to 38MB)
+    task jlink(type: Exec) {
+
+        commandLine = [
+                jdkPath.concat("/bin/jlink"),
+                '--module-path', jdkPath.concat("/jmods"),
+                '--add-modules', 'java.base,jdk.unsupported',
+                '--strip-debug',
+                '--no-header-files',
+                '--no-man-pages',
+                '--strip-native-commands',
+                '--vm=server',
+                '--compress=2',
+                '--output', prebuiltJRE
+        ] as List<String>
+
+        doLast {
+            // Some extra debloat.
+            delete(file("${prebuiltJRE}/conf"))
+            delete(file("${prebuiltJRE}/legal"))
+            delete fileTree("${prebuiltJRE}/bin").matching { include "api*.dll" }
+        }
+    }
+
+    jlink.onlyIf { !file(prebuiltJRE).exists() }
+
+
+}
+ext {
+    // expose current version + build date to children projects
+    buildVersion = "$version-${new Date().format('yyyyMMddHHmmss')}"
 }
 
-eclipse.project.name = 'finisterra-parent'
+eclipse.project.name = 'finisterra' + '-parent'
