@@ -13,10 +13,8 @@ dependencies {
     implementation "net.onedaybeard.artemis:artemis-odb:$artemisVersion"
     implementation "net.onedaybeard.artemis:artemis-fluid-core:$artemisVersion"
     api arcModule("arc-core")
-    api arcModule("extensions:freetype")
     implementation arcModule("backends:backend-sdl")
     implementation arcModule("natives:natives-desktop")
-    implementation arcModule("natives:natives-freetype-desktop")
 }
 
 ext {
@@ -180,7 +178,9 @@ nativeImage {
     executableName = 'finisterra-client'
     outputDirectory = file("$buildDir/bin")
     arguments {
-        add '-J-XstartOnFirstThread'
+        if (OperatingSystem.current() == OperatingSystem.MAC_OS) {
+            add '-J-XstartOnFirstThread'
+        }
         add '--no-fallback'
         add '--enable-all-security-services'
         add '--report-unsupported-elements-at-runtime'
