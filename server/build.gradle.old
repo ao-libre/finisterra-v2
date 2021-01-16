@@ -1,0 +1,94 @@
+//plugins {
+//    id 'application'
+//    id 'artemis'
+//    id 'artemis-fluid'
+//    id "com.github.johnrengelman.shadow" version "6.1.0"
+//    id 'org.mikeneck.graalvm-native-image' version 'v1.0.0'
+//}
+//
+//mainClassName = 'Launcher'
+//eclipse.project.name = appName + '-server'
+//
+//dependencies {
+//    implementation "net.onedaybeard.artemis:artemis-fluid-core"
+//    implementation group: "net.onedaybeard.artemis", name: "artemis-odb", version: "$artemisVersion"
+//    api project(':shared')
+//    api project(':server:components')
+//    api project(':shared:shared-components')
+//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+//}
+//
+//test {
+//    useJUnitPlatform()
+//}
+//
+//project.ext.weaveDir = new File("$buildDir/explodedForWeave")
+//project.ext.fluidOutputDir = new File("$buildDir/generated-sources/fluid/")
+//
+//sourceSets {
+//    main.java.srcDirs = ['main', project.fluidOutputDir, project(':server:components').file('server'), project(':shared:shared-components').file('shared')]
+//    main.resources.srcDirs = ['resources']
+//    test.java.srcDirs += ['test', 'main']
+//}
+//
+//fluid {
+//    generatedSourcesDirectory = fluidOutputDir
+//    classpath = sourceSets.main.compileClasspath
+//}
+//compileJava.dependsOn fluid
+//
+//task explodeForWeave(type: Sync, dependsOn: classes) {
+//    into project.weaveDir
+//    from files(sourceSets.main.output.classesDirs)
+//    from files(sourceSets.main.output.resourcesDir)
+//    from {configurations.compile.collect {zipTree(it)}}
+//}
+//
+//weave {
+//    classesDir = sourceSets.main.java.outputDir
+//    dependsOn explodeForWeave
+//    enableArtemisPlugin = true
+//    enablePooledWeaving = true
+//    generateLinkMutators = true
+//    optimizeEntitySystems = true
+//}
+//
+//classes.finalizedBy(weave)
+//// Help intellIJ pick up the generated classes.
+//idea {
+//    module {
+//        generatedSourceDirs += fluidOutputDir
+//        excludeDirs -= file("$buildDir")
+//        excludeDirs -= file("$buildDir/src")
+//        excludeDirs += file("$buildDir/dependency-cache")
+//        excludeDirs += file("$buildDir/libs")
+//        excludeDirs += file("$buildDir/tmp")
+//    }
+//}
+//
+//
+//task dist(type: Jar, dependsOn: weave) {
+//    from project.weaveDir
+//    manifest {
+//        attributes 'Main-Class': project.mainClassName
+//    }
+//}
+//
+//shadowJar {
+//    from project.weaveDir
+//}
+//
+//nativeImage {
+//    graalVmHome = System.getProperty('java.home')
+//    mainClass = 'Launcher'
+//    classpath = shadowJar
+//    executableName = 'finisterra-server'
+//    outputDirectory = file("$buildDir/bin")
+//    arguments {
+//        add '--no-fallback'
+//        add '--enable-all-security-services'
+//        add '--report-unsupported-elements-at-runtime'
+//        add '-H:ReflectionConfigurationFiles=./resources/reflect-config.json'
+//    }
+//}

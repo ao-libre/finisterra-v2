@@ -1,14 +1,4 @@
-import org.gradle.internal.jvm.Jvm
-
 buildscript {
-    ext {
-        artemisVersion = '2.4.0-SNAPSHOT'
-        prebuiltJRE = "${project.buildDir}/bundled-JRE"
-        getArcHash = {
-            return new Properties().with{ p -> p.load(file('gradle.properties').newReader()); return p }["archash"]
-        }
-        arcHash = getArcHash()
-    }
     repositories {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
@@ -74,9 +64,12 @@ subprojects {
     }
 
 }
+import org.gradle.internal.jvm.Jvm
 
 configure(subprojects.findAll { it.name == 'server' || it.name == 'client' }) {
+
     ext {
+        prebuiltJRE = "${project.buildDir}/bundled-JRE"
         jdkPath = Jvm.current().getJavaHome().path
         JPackagePath = "/Users/guidota/Documents/jdks/jdk-15.0.1.jdk/Contents/Home/bin/jpackage"
     }
@@ -107,11 +100,4 @@ configure(subprojects.findAll { it.name == 'server' || it.name == 'client' }) {
 
     jlink.onlyIf { !file(prebuiltJRE).exists() }
 
-
 }
-ext {
-    // expose current version + build date to children projects
-    buildVersion = "$version-${new Date().format('yyyyMMddHHmmss')}"
-}
-
-eclipse.project.name = 'finisterra' + '-parent'
