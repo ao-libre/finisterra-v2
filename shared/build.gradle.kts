@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":shared:shared-components"))
+    api(project(":shared:shared-components"))
     implementation("com.artemis:artemis-odb:0.0.2-SNAPSHOT")
 }
+

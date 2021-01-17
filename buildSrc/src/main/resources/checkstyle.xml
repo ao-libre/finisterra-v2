@@ -3,12 +3,14 @@
 <module name="Checker">
     <module name="TreeWalker">
         <module name="UnusedImports" />
-        <module name="AvoidStarImport" />
         <module name="ConstantName" />
         <module name="NeedBraces" />
         <module name="RightCurly" />
         <module name="ModifierOrder">
             <property name="severity" value="warning"/>
         </module>
+    </module>
+    <module name="SuppressionFilter">
+        <property name="file" value="${config_loc}\suppressions.xml"/>
     </module>
 </module>

@@ -1,5 +1,6 @@
 plugins {
-    id("java-library")
+    id("finisterra.java-conventions")
+    id("application")
     id("artemis")
     id("artemis-fluid")
 }
@@ -8,11 +9,14 @@ dependencies {
     implementation("com.artemis:artemis-fluid-core:0.0.2-SNAPSHOT")
 }
 
-val fluidOutputDir = file("$buildDir/generated-sources/fluid/")
+val fluidOutputDir = file("${buildDir}/generated-sources/fluid/")
+val componentsDir = file("${projectDir}/components/src/main/java")
 
 sourceSets {
     main {
-        java.sourceDirectories.plus(fluidOutputDir)
+        java {
+            srcDirs(listOf(fluidOutputDir, componentsDir))
+        }
     }
 }
 
@@ -22,7 +26,7 @@ tasks {
         outputs.upToDateWhen { false }
     }
     fluid {
-        dependsOn("mkdir", "weave")
+        dependsOn("mkdir")
         classpath = sourceSets.main.get().compileClasspath
         generatedSourcesDirectory = fluidOutputDir
     }

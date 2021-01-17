@@ -1,5 +1,5 @@
 plugins {
-    java
+    `java-library`
     checkstyle
     // NOTE: external plugin version is specified in implementation dependency artifact of the project's build file
     id("com.github.spotbugs")
@@ -10,6 +10,7 @@ repositories {
 }
 
 checkstyle {
+
     config = resources.text.fromString(finisterra.CheckstyleUtil.getCheckstyleConfig("/checkstyle.xml"))
     maxWarnings = 0
 }
