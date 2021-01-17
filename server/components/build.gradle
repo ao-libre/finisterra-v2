@@ -1,6 +1,0 @@
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-sourceSets.main.java.srcDirs = ['server']
-
-dependencies {
-    api group: "net.onedaybeard.artemis", name: "artemis-odb", version: "$artemisVersion"
-}
