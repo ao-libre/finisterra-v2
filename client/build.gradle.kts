@@ -6,7 +6,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":client:components"))
+    api(project(":client:components"))
     api(project(":shared"))
     api(arcModule("arc-core"))
     implementation(arcModule("backend-sdl"))

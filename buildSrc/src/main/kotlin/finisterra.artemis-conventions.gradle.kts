@@ -11,11 +11,12 @@ dependencies {
 
 val fluidOutputDir = file("${buildDir}/generated-sources/fluid/")
 val componentsDir = file("${projectDir}/components/src/main/java")
+val sharedComponentsDir = file("${rootDir}/shared/components/src/main/java")
 
 sourceSets {
     main {
         java {
-            srcDirs(fluidOutputDir)
+            srcDirs(fluidOutputDir, componentsDir, sharedComponentsDir)
         }
     }
 }
@@ -32,7 +33,8 @@ tasks {
     }
 
     weave {
-        classesDir = sourceSets.main.get().java.outputDir
+        dependsOn("build")
+        classesDirs = files(sourceSets.main.get().java.outputDir)
         isEnableArtemisPlugin = true
         isEnablePooledWeaving = true
         isGenerateLinkMutators = true

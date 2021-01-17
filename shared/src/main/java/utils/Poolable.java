@@ -1,5 +1,5 @@
 package utils;
 
 public abstract class Poolable {
-    abstract protected void reset();
+    protected abstract void reset();
 }
