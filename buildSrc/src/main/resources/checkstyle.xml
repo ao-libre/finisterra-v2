@@ -10,7 +10,8 @@
             <property name="severity" value="warning"/>
         </module>
     </module>
-    <module name="SuppressionFilter">
-        <property name="file" value="${config_loc}\suppressions.xml"/>
+    <module name="SuppressionSingleFilter">
+        <property name="files" value="[/\\]build[/\\]"/>
+        <property name="checks" value=".*"/>
     </module>
 </module>

@@ -1,5 +1,1 @@
-{
-  "resources":{
-  "includes":[]},
-  "bundles":[]
-}
+{"resources":{"includes":[],"excludes":[]},"bundles":[]}

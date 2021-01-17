@@ -4,7 +4,7 @@ plugins {
 }
 
 repositories {
-    gradlePluginPortal() // so that external plugins can be resolved in dependencies section
+    gradlePluginPortal()
     maven {
         url = uri("https://maven.pkg.github.com/guidota/artemis-odb")
         credentials {
@@ -17,6 +17,7 @@ repositories {
 dependencies {
     implementation("com.artemis:artemis-fluid-gradle-plugin:0.0.2-SNAPSHOT")
     implementation("com.artemis:artemis-odb-gradle-plugin:0.0.2-SNAPSHOT")
-    implementation("gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.0.5")
+    implementation("com.github.jengelman.gradle.plugins:shadow:6.1.0")
+    api("gradle.plugin.org.mikeneck:graalvm-native-image-plugin:1.0.0")
     testImplementation("junit:junit:4.13")
 }

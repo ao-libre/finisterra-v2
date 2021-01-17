@@ -1,6 +1,7 @@
 import com.artemis.World;
 import world.ServerWorld;
 
+import java.util.Locale;
 import java.util.logging.Logger;
 
 public class Launcher {
@@ -10,6 +11,7 @@ public class Launcher {
 
     public static void main(String[] args) throws InterruptedException {
         World world = new ServerWorld();
+        boolean runOnce = shouldRunOnce(args);
         LOGGER.info("Server up and running");
         boolean running = true;
         long time = 0;
@@ -23,7 +25,14 @@ public class Launcher {
             float startTime = System.currentTimeMillis();
             world.process();
             time += System.currentTimeMillis() - startTime;
+            if (runOnce) {
+                running = false;
+            }
         }
+    }
+
+    private static boolean shouldRunOnce(String[] args) {
+        return args.length > 0 && args[0].toLowerCase(Locale.ROOT).equals("once");
     }
 
 }

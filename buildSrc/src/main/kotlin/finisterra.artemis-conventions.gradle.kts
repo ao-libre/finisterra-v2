@@ -15,7 +15,7 @@ val componentsDir = file("${projectDir}/components/src/main/java")
 sourceSets {
     main {
         java {
-            srcDirs(listOf(fluidOutputDir, componentsDir))
+            srcDirs(fluidOutputDir)
         }
     }
 }
