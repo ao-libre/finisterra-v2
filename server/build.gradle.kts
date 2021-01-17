@@ -1,6 +1,5 @@
 plugins {
     id("finisterra.artemis-conventions")
-    id("finisterra.shadow-conventions")
     id("finisterra.native-conventions")
 }
 
@@ -12,16 +11,12 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
-
 application {
     @Suppress("DEPRECATION") // it will be deprecated in gradle 8 but shadow jar still not supports `mainClass`
     mainClassName = "Launcher"
     mainClass.set("Launcher")
 }
 
-nativeImage {
-    mainClass = "Launcher"
+tasks.test {
+    useJUnitPlatform()
 }

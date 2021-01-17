@@ -35,7 +35,7 @@ public class LoadingScreen extends Screen {
 
     @Override
     public void update() {
-        if (Core.assets.update()) {
+        if (assetManager.update()) {
             this.appEventBus.fire(AppEvent.LOADING_FINISHED);
         }
     }

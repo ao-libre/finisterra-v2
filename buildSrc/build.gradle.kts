@@ -1,10 +1,10 @@
-
 plugins {
     `kotlin-dsl`
 }
 
 repositories {
     gradlePluginPortal()
+    maven { url = uri("https://jitpack.io") }
     maven {
         url = uri("https://maven.pkg.github.com/guidota/artemis-odb")
         credentials {
