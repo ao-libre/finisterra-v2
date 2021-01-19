@@ -1,4 +1,7 @@
 import com.artemis.World;
+import com.esotericsoftware.kryonetty.ServerEndpoint;
+import com.esotericsoftware.kryonetty.ThreadedServerEndpoint;
+import com.esotericsoftware.kryonetty.kryo.KryoNetty;
 import world.ServerWorld;
 
 import java.util.Locale;
@@ -11,6 +14,9 @@ public class Launcher {
 
     public static void main(String[] args) throws InterruptedException {
         World world = new ServerWorld();
+        KryoNetty kryoNetty = new KryoNetty();
+        ServerEndpoint server = new ThreadedServerEndpoint(kryoNetty);
+        server.start(7666);
         boolean runOnce = shouldRunOnce(args);
         LOGGER.info("Server up and running");
         boolean running = true;

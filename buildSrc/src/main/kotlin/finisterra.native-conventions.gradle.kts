@@ -2,7 +2,6 @@ import org.gradle.internal.os.OperatingSystem
 
 plugins {
     id("org.mikeneck.graalvm-native-image")
-    id("finisterra.shadow-conventions")
 }
 
 val os: OperatingSystem = OperatingSystem.current()
@@ -11,14 +10,14 @@ generateNativeImageConfig {
     enabled = true
     byRunningApplication {
         if(os.isMacOsX) {
-            arguments("-J-XstartOnFirstThread")
+            jvmArguments("-XstartOnFirstThread")
         }
         arguments("once")
     }
 }
 
 nativeImage {
-//    dependsOn("generateNativeImageConfig") add this when plugin supports JVM arguments
+    dependsOn("generateNativeImageConfig")
     graalVmHome = System.getenv("JAVA_HOME")
     mainClass = "Launcher"
     executableName = rootProject.name + "-" + project.name

@@ -1,7 +1,6 @@
 plugins {
     id("finisterra.java-conventions")
     id("application")
-    id("artemis")
     id("artemis-fluid")
 }
 
@@ -10,13 +9,11 @@ dependencies {
 }
 
 val fluidOutputDir = file("${buildDir}/generated-sources/fluid/")
-val componentsDir = file("${projectDir}/components/src/main/java")
-val sharedComponentsDir = file("${rootDir}/shared/components/src/main/java")
 
 sourceSets {
     main {
         java {
-            srcDirs(fluidOutputDir, componentsDir, sharedComponentsDir)
+            srcDirs(fluidOutputDir)
         }
     }
 }
@@ -30,17 +27,8 @@ tasks {
         dependsOn("mkdir")
         classpath = sourceSets.main.get().compileClasspath
         generatedSourcesDirectory = fluidOutputDir
+        preferences.excludeFromClasspath = listOf("kryonetty-", "netty-", "kryo-")
     }
 
-    weave {
-        dependsOn("build")
-        classesDirs = files(sourceSets.main.get().java.outputDir)
-        isEnableArtemisPlugin = true
-        isEnablePooledWeaving = true
-        isGenerateLinkMutators = true
-        isOptimizeEntitySystems = true
-    }
-
-    getByName("classes").finalizedBy("weave")
     getByName("compileJava").dependsOn("fluid")
 }
