@@ -6,9 +6,9 @@ plugins {
 }
 
 dependencies {
-    api(project(":client:components"))
-    api(project(":shared"))
-    api(arcModule("arc-core"))
+    implementation(project(":client:components"))
+    implementation(project(":shared"))
+    implementation(arcModule("arc-core"))
     implementation(arcModule("backend-sdl"))
     implementation(arcModule("natives-desktop"))
     implementation("com.artemis:artemis-odb:0.0.2-SNAPSHOT")
@@ -24,11 +24,5 @@ application {
 
     if(os.isMacOsX) {
         applicationDefaultJvmArgs = listOf("-XstartOnFirstThread")
-    }
-}
-
-tasks.named<com.github.jengelman.gradle.plugins.shadow.internal.JavaJarExec>("runShadow") {
-    if(os.isMacOsX) {
-        jvmArgs = listOf("-XstartOnFirstThread")
     }
 }

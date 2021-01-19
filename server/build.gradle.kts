@@ -4,8 +4,9 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":server:components"))
     api(project(":shared"))
+    implementation(project(":server:components"))
+    implementation("com.github.EsotericSoftware:kryonetty:master-SNAPSHOT")
     implementation("com.artemis:artemis-odb:0.0.2-SNAPSHOT")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
