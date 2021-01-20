@@ -20,7 +20,3 @@ jobs:
         run: >-
           "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" &&
           gradlew.bat nativeImage
-      - name: Create zips
-        run: >-
-        7z a finisterra-client-win.zip ./client/build/native-image/finisterra-client.exe
-        7z a finisterra-server-win.zip ./server/build/native-image/finisterra-server.exe
