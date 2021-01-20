@@ -9,19 +9,19 @@ on:
 jobs:
   build:
     name: Builds Windows Native
-    runs-on: windows-latest
+    runs-on: windows-2019
     steps:
       - uses: actions/checkout@v2.3.4
       - uses: DeLaGuardo/setup-graalvm@3
-          with:
-            graalvm-version: '21.0.0.java11'
-      - name: Set up Visual C Build Tools Workload for Visual Studio 2017 Build Tools
-        run: |
-          choco install visualstudio2017-workload-vctools
+        with:
+          graalvm-version: '21.0.0.java11'
       - name: Build Native Image
         shell: cmd
-        env:
           JAVA_HOME: ./graalvm-ce-java11-20.2.0
-        run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
+        run: >-
+          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" &&
           gradlew.bat nativeImage
+      - name: Create zips
+        run: >-
+        7z a finisterra-client-win.zip ./client/build/native-image/finisterra-client.exe
+        7z a finisterra-server-win.zip ./server/build/native-image/finisterra-server.exe
