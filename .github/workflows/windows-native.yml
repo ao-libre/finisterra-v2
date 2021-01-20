@@ -12,12 +12,11 @@ jobs:
     runs-on: windows-2019
     steps:
       - uses: actions/checkout@v2.3.4
-      - uses: DeLaGuardo/setup-graalvm@3
+      - uses: DeLaGuardo/setup-graalvm@master
         with:
           graalvm-version: '21.0.0.java11'
       - name: Build Native Image
         shell: cmd
-          JAVA_HOME: ./graalvm-ce-java11-20.2.0
         run: >-
           "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" &&
           gradlew.bat nativeImage
