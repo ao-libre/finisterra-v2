@@ -1,8 +1,14 @@
-name: Linux Native
-on: [push, pull_request]
+name: Linux/Mac Native
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 jobs:
   build:
-    name: Builds Linux Native
+    name: Builds Linux/Mac Native
     strategy:
       matrix:
         os: [ 'ubuntu-latest', 'macos-latest' ]
@@ -11,15 +17,12 @@ jobs:
             label: 'linux'
           - os: 'macos-latest'
             label: 'mac'
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v2.3.4
-      - name: Install GraalVM
-        env:
-          GRAAL_VERSION: 20.3.0
-          GRAAL_OS: linux-amd64
-        run: ./install-graal.sh
-      - name: Install Native Image
-        run: ./graalvm/bin/gu install native-image
+      - uses: DeLaGuardo/setup-graalvm@3
+          with:
+            graalvm-version: '21.0.0.java11'
       - name: Build Native Image
         run: ./gradlew nativeImage
