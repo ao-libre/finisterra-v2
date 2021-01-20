@@ -1,0 +1,25 @@
+name: Linux Native
+on: [push, pull_request]
+jobs:
+  build:
+    name: Builds Linux Native
+    strategy:
+      matrix:
+        os: [ 'ubuntu-latest', 'macos-latest' ]
+        include:
+          - os: 'ubuntu-latest'
+            label: 'linux'
+          - os: 'macos-latest'
+            label: 'mac'
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2.3.4
+      - name: Install GraalVM
+        env:
+          GRAAL_VERSION: 20.3.0
+          GRAAL_OS: linux-amd64
+        run: ./install-graal.sh
+      - name: Install Native Image
+        run: ./graalvm/bin/gu install native-image
+      - name: Build Native Image
+        run: ./gradlew nativeImage
