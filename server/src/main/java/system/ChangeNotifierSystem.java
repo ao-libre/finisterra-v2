@@ -10,7 +10,8 @@ import java.util.Set;
 @Wire
 public class ChangeNotifierSystem extends BaseSystem {
     ChangeRegistry changeRegistry;
-    NetworkSystem networkSystem;
+    EntityUpdateSystem networkSystem;
+
     @Override
     protected void processSystem() {
         changeRegistry.getRemoved().forEach(this::remove);

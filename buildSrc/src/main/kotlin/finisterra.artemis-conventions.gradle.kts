@@ -27,7 +27,7 @@ tasks {
         dependsOn("mkdir")
         classpath = sourceSets.main.get().compileClasspath
         generatedSourcesDirectory = fluidOutputDir
-        preferences.excludeFromClasspath = listOf("kryonetty-", "netty-", "kryo-")
+        preferences.excludeFromClasspath = listOf("kryo-")
     }
 
     getByName("compileJava").dependsOn("fluid")
