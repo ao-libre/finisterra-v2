@@ -1,7 +1,6 @@
 package network;
 
 import com.artemis.Component;
-import shared.EntityUpdateDTO;
 import utils.Poolable;
 
 import java.util.*;
@@ -12,6 +11,8 @@ public class EntityUpdate extends Poolable {
     private int entityId;
     private final Set<Class<? extends Component>> toRemove = new HashSet<>();
     private final Set<Component> toUpdate = new HashSet<>();
+
+    public EntityUpdate() {}
 
     public EntityUpdate(int entityId) {
         this.entityId = entityId;
@@ -41,7 +42,6 @@ public class EntityUpdate extends Poolable {
                 toRemove.toArray(Class[]::new),
                 toUpdate.toArray(Component[]::new));
     }
-
 
     @Override
     protected void reset() {

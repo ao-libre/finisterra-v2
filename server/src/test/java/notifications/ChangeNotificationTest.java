@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test;
 import world.ServerWorld;
 
 import static com.artemis.E.E;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ChangeNotificationTest {
 

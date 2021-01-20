@@ -1,18 +1,16 @@
-package shared;
+package network;
 
 import com.artemis.Component;
 import com.artemis.PooledComponent;
+import utils.Poolable;
 
 import java.util.Collection;
 import java.util.List;
 
-public class EntityUpdateDTO extends PooledComponent {
+public class EntityUpdateDTO extends Poolable {
     private int entityId;
     private Class<? extends Component>[] toRemove;
     private Component[] toUpdate;
-
-    public EntityUpdateDTO() {
-    }
 
     public EntityUpdateDTO(int entityId) {
         this.entityId = entityId;
