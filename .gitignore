@@ -3,6 +3,8 @@ private/
 build/
 client/sources
 server/sources
+client/src/main/resources/native-image/
+server/src/main/resources/native-image/
 out/
 **/out/
 desktop/Config.json
