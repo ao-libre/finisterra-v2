@@ -35,9 +35,7 @@ nativeImage {
         add("-H:ConfigurationResourceRoots=native-image/")
         add("-H:+PrintClassInitialization")
         add("-H:+ReportExceptionStackTraces")
-        add("-H:GenerateDebugInfo=1")
         add("-H:+AllowVMInspection")
-        add("--native-image-info")
         add("--verbose")
     }
 }
