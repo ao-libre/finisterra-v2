@@ -1,7 +1,6 @@
 package network;
 
 import com.artemis.Component;
-import com.artemis.PooledComponent;
 import utils.Poolable;
 
 import java.util.Collection;

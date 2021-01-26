@@ -1,16 +1,8 @@
 ### Finisterra Specific ###
 private/
 build/
-desktop/*.tar.gz
-desktop/*.zip
-desktop/jdk*
-desktop/Config.json
-desktop/Screenshots*
-desktop/error*
-server/Accounts/
-server/[Cc]har[Ff]iles/
-server/bundled-APP/
-server/Charfile/
+client/sources
+server/sources
 out/
 **/out/
 desktop/Config.json
