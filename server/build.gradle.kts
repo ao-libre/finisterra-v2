@@ -8,6 +8,7 @@ dependencies {
     implementation(project(":server:components"))
     implementation("com.github.crykn:kryonet:2.22.7")
     implementation("com.artemis:artemis-odb:0.0.2-SNAPSHOT")
+    implementation("net.mostlyoriginal.artemis-odb:contrib-eventbus:2.4.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
 }

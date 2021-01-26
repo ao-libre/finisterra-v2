@@ -4,15 +4,18 @@ import communication.Messenger;
 import network.RegisterEvent;
 import world.ServerWorld;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class EntityMessenger implements Messenger {
 
-    private Queue<Object> receivedEvents = new ConcurrentLinkedQueue<>();
-    private Queue<Object> sentEvents = new ConcurrentLinkedQueue<>();
-    private ServerWorld world;
-    private int entityId;
+    private final Map<Integer, Queue<Object>> receivedEvents = new HashMap<>();
+    private final Map<Integer, Queue<Object>> sentEvents = new HashMap<>();
+    private final Map<String, Integer> entities = new HashMap<>();
+    private final ServerWorld world;
 
     public EntityMessenger(ServerWorld world) {
         this.world = world;
@@ -21,26 +24,26 @@ public class EntityMessenger implements Messenger {
 
     @Override
     public int register(String id) {
-        return entityId = world.register(new RegisterEvent());
+        int entityId = world.register(new RegisterEvent());
+        entities.put(id, entityId);
+        return entityId;
     }
 
     @Override
     public void receive(String id, Object object) {
-        world.receive(entityId, object);
+        world.receive(entities.get(id), object);
     }
 
     @Override
     public void send(int id, Object object) {
-        if (id == entityId) {
-            sentEvents.add(object);
-        }
+        sentEvents.computeIfAbsent(id, (someId) -> new ConcurrentLinkedQueue<>()).add(object);
     }
 
-    public Queue<Object> getReceivedEvents() {
-        return receivedEvents;
+    public Optional<Queue<Object>> getReceivedEvents(int id) {
+        return Optional.ofNullable(receivedEvents.get(id));
     }
 
-    public Queue<Object> getSentEvents() {
-        return sentEvents;
+    public Optional<Queue<Object>> getSentEvents(int id) {
+        return Optional.ofNullable(sentEvents.get(id));
     }
 }

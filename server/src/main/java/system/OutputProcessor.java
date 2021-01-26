@@ -12,7 +12,7 @@ public class OutputProcessor extends BaseSystem {
 
     private final Set<Messenger> messengers = new HashSet<>();
 
-    private final Map<Integer, Queue<WorldEvent>> worldEvents = new HashMap<>();
+    private final Map<Integer, Queue<Object>> worldEvents = new HashMap<>();
 
     public void register(Messenger messenger) {
         messengers.add(messenger);
@@ -23,23 +23,15 @@ public class OutputProcessor extends BaseSystem {
     }
 
     public void push(int id, Object event) {
-        worldEvents.computeIfAbsent(id, (entityId) -> new ConcurrentLinkedQueue<>()).add(new WorldEvent(id, event));
+        worldEvents.computeIfAbsent(id, (entityId) -> new ConcurrentLinkedQueue<>()).add(event);
     }
 
     @Override
     protected void processSystem() {
-        worldEvents.forEach((entityId, events) ->
-                messengers.forEach((messenger -> messenger.send(entityId, events.toArray()))));
+        messengers.forEach((messenger ->
+                worldEvents.forEach((entityId, events) ->
+                        messenger.send(entityId, events.toArray()))));
         worldEvents.clear();
     }
 
-    private static class WorldEvent {
-        int entityId;
-        Object object;
-
-        public WorldEvent(int entityId, Object object) {
-            this.entityId = entityId;
-            this.object = object;
-        }
-    }
 }
