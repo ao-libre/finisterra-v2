@@ -111,7 +111,7 @@ public class MessengerTest {
     }
 
     private void whenEntityPublicComponentChanges() {
-        E(entityId).armorIndex(1);
+        E(entityIdWithPublicComponent).armorIndex(1);
         world.process();
     }
 
