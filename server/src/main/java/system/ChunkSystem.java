@@ -3,7 +3,6 @@ package system;
 import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.artemis.utils.ImmutableBag;
-import network.EntityUpdateDTO;
 
 import java.util.Objects;
 
@@ -21,21 +20,25 @@ public class ChunkSystem extends BaseSystem {
 
     private void checkChunk(Integer entityId) {
         // entity has changed its position
-        String oldChunkId = null;
+        String oldChunkId = getChunkId(entityId);
+
         String currentChunkId = null;
         E entity = E.E(entityId);
-        ImmutableBag<String> entityGroups = entity.groups();
-        for (int i = entityGroups.size() - 1; i >= 0; i--) {
-            if (entityGroups.get(i).startsWith(CHUNK_IDENTIFIER)) {
-                oldChunkId = entityGroups.get(i);
-                break;
-            }
-        }
         if (entity.hasPosition()) {
             currentChunkId = getChunkId(entity.getPosition());
 
         }
         updateChunk(entity, oldChunkId, currentChunkId);
+    }
+
+    private String getChunkId(int entityId) {
+        ImmutableBag<String> entityGroups = E.E(entityId).groups();
+        for (int i = entityGroups.size() - 1; i >= 0; i--) {
+            if (entityGroups.get(i).startsWith(CHUNK_IDENTIFIER)) {
+                return entityGroups.get(i);
+            }
+        }
+        return null;
     }
 
     private void updateChunk(E entity, String oldChunkId, String currentChunkId) {
