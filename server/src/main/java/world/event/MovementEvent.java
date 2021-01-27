@@ -1,7 +1,7 @@
 package world.event;
 
+import com.artemis.Position;
 import net.mostlyoriginal.api.event.common.Event;
-import shared.Position;
 
 public class MovementEvent implements Event {
     private final int entityId;

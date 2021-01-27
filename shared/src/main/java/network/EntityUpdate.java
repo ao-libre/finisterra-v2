@@ -1,12 +1,17 @@
 package network;
 
 import com.artemis.Component;
+import utils.Pool;
 import utils.Poolable;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class EntityUpdate extends Poolable {
+    private static final Pool<EntityUpdateDTO> DTO_POOL = new Pool<>(EntityUpdateDTO.class);
     private int entityId;
     private final Set<Class<? extends Component>> toRemove = new HashSet<>();
     private final Set<Component> toUpdate = new HashSet<>();
@@ -50,9 +55,11 @@ public class EntityUpdate extends Poolable {
     }
 
     public EntityUpdateDTO toDTO() {
-        return new EntityUpdateDTO(entityId,
-                toRemove.toArray(Class[]::new),
-                toUpdate.toArray(Component[]::new));
+        EntityUpdateDTO entityUpdateDTO = DTO_POOL.obtain();
+        entityUpdateDTO.setEntityId(entityId);
+        entityUpdateDTO.setToUpdate(toUpdate.toArray(Component[]::new));
+        entityUpdateDTO.setToRemove(toRemove.toArray(Class[]::new));
+        return entityUpdateDTO;
     }
 
     @Override

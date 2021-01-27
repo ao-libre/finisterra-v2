@@ -4,7 +4,6 @@ import arc.backend.sdl.SdlApplication;
 import arc.backend.sdl.SdlConfig;
 import game.AOGame;
 
-import java.util.Arrays;
 import java.util.Locale;
 
 public class Launcher {

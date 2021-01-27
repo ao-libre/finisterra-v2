@@ -1,12 +1,9 @@
 package system;
 
-import com.artemis.BaseSystem;
-import com.artemis.ChangeRegistry;
-import com.artemis.E;
-import com.artemis.EBag;
+import com.artemis.*;
 import com.artemis.annotations.Wire;
 import com.artemis.utils.ImmutableBag;
-import shared.Position;
+
 import java.util.Objects;
 
 @Wire
@@ -43,33 +40,14 @@ public class ChunkSystem extends BaseSystem {
 
     private void updateChunk(E entity, String oldChunkId, String currentChunkId) {
         if (!Objects.equals(oldChunkId, currentChunkId)) {
-            if (currentChunkId != null) entity.group(currentChunkId);
-            if (oldChunkId != null) entity.removeGroup(oldChunkId);
+            if (currentChunkId != null) {
+                entity.group(currentChunkId);
+            }
+            if (oldChunkId != null) {
+                entity.removeGroup(oldChunkId);
+            }
         }
     }
-//
-//    @Subscribe
-//    public void consumeEntityMovement(MovementEvent movementEvent) {
-//        int entityId = movementEvent.getEntityId();
-//        Position oldPosition = movementEvent.getOldPosition();
-//        Position currentPosition = E.E(movementEvent.getEntityId()).getPosition();
-//
-//        String oldChunkId = getChunkId(oldPosition);
-//        String currentChunkId = getChunkId(currentPosition);
-//
-//        if (!oldChunkId.equals(currentChunkId)) {
-//            E.E(entityId).removeGroup(oldChunkId);
-//            E.E(entityId).group(currentChunkId);
-//        }
-//    }
-//
-//    @Subscribe
-//    public void consumePositionAssignmentEvent(PositionAssignmentEvent positionAssignmentEvent) {
-//        int entityId = positionAssignmentEvent.getEntityId();
-//
-//        String currentChunkId = getChunkId(E.E(entityId).getPosition());
-//        E.E(entityId).group(currentChunkId);
-//    }
 
     String getChunkId(Position position) {
         return CHUNK_IDENTIFIER + position.getX() / 10 + "@" + position.getY() / 10;

@@ -1,9 +1,9 @@
 package system;
 
 import com.artemis.EBag;
+import com.artemis.Position;
 import com.artemis.World;
 import org.junit.jupiter.api.Test;
-import shared.Position;
 import world.ServerWorld;
 
 import static com.artemis.E.E;

@@ -3,9 +3,9 @@ package system;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.FluidIteratingSystem;
+import com.artemis.Position;
 import com.artemis.annotations.Wire;
 import net.mostlyoriginal.api.event.common.EventSystem;
-import shared.Position;
 import world.event.MovementEvent;
 import world.event.PositionAssignmentEvent;
 

@@ -1,9 +1,8 @@
 package notifications;
 
+import com.artemis.Position;
 import network.EntityUpdateDTO;
 import org.junit.jupiter.api.Test;
-import shared.Position;
-import system.MovementSystem;
 import world.ServerWorld;
 
 import java.util.Arrays;
@@ -19,9 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class MessengerTest {
 
     private ServerWorld world;
+    private EntityMessenger messenger;
+
     private int entityId;
     private int entityIdWithPublicComponent;
-    private EntityMessenger messenger;
 
     @Test
     public void entityChangesShouldBeNotifiedToMessenger() {
@@ -74,7 +74,7 @@ public class MessengerTest {
     }
 
     private void whenEntityWithPositionChanges() {
-        world.getSystem(MovementSystem.class).moveEntity(E(entityId), new Position(5, 4));
+        E(entityId).positionX(5).positionY(4);
         world.process();
     }
 
@@ -96,6 +96,5 @@ public class MessengerTest {
     private void givenAWorld() {
         world = new ServerWorld();
     }
-
 
 }

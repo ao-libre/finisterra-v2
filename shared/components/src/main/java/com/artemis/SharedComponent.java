@@ -1,7 +1,6 @@
-package shared;
+package com.artemis;
 
 import annotations.Private;
-import com.artemis.Component;
 
 @Private
 public class SharedComponent extends Component {

@@ -1,7 +1,6 @@
-package shared;
+package com.artemis;
 
 import annotations.Public;
-import com.artemis.Component;
 import com.artemis.annotations.PooledWeaver;
 
 @Public
@@ -25,11 +24,11 @@ public class Position extends Component {
         return y;
     }
 
-    public void setX(int x) {
+    void setX(int x) {
         this.x = x;
     }
 
-    public void setY(int y) {
+    void setY(int y) {
         this.y = y;
     }
 
