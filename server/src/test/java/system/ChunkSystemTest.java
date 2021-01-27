@@ -84,7 +84,10 @@ public class ChunkSystemTest {
     }
 
     private void thenEntityIsMovedToNewChunk() {
-        EBag entities = this.chunkSystem.getEntities(this.chunkSystem.getChunkId(newPosition));
+        String newChunkId = this.chunkSystem.getChunkId(newPosition);
+        assertEquals(newChunkId, this.chunkSystem.getChunkId(entityId));
+
+        EBag entities = this.chunkSystem.getEntities(newChunkId);
         assertEquals(entities.size(), 1);
         assertEquals(entities.get(0).id(), entityId);
 

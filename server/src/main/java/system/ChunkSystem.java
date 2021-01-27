@@ -31,16 +31,6 @@ public class ChunkSystem extends BaseSystem {
         updateChunk(entity, oldChunkId, currentChunkId);
     }
 
-    private String getChunkId(int entityId) {
-        ImmutableBag<String> entityGroups = E.E(entityId).groups();
-        for (int i = entityGroups.size() - 1; i >= 0; i--) {
-            if (entityGroups.get(i).startsWith(CHUNK_IDENTIFIER)) {
-                return entityGroups.get(i);
-            }
-        }
-        return null;
-    }
-
     private void updateChunk(E entity, String oldChunkId, String currentChunkId) {
         if (!Objects.equals(oldChunkId, currentChunkId)) {
             if (currentChunkId != null) {
@@ -60,6 +50,16 @@ public class ChunkSystem extends BaseSystem {
                 entityUpdateSystem.sendEntity(entity.id(), entityInChunk.id());
             }
         });
+    }
+
+    String getChunkId(int entityId) {
+        ImmutableBag<String> entityGroups = E.E(entityId).groups();
+        for (int i = entityGroups.size() - 1; i >= 0; i--) {
+            if (entityGroups.get(i).startsWith(CHUNK_IDENTIFIER)) {
+                return entityGroups.get(i);
+            }
+        }
+        return null;
     }
 
     String getChunkId(Position position) {
