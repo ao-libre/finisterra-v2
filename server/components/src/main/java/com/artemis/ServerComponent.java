@@ -1,6 +1,5 @@
-package server;
+package com.artemis;
 
-import com.artemis.Component;
 import com.artemis.annotations.PooledWeaver;
 
 @PooledWeaver

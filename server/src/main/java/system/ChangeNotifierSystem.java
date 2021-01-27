@@ -10,7 +10,7 @@ import java.util.Set;
 @Wire
 public class ChangeNotifierSystem extends BaseSystem {
     ChangeRegistry changeRegistry;
-    EntityUpdateSystem networkSystem;
+    EntityUpdateSystem entityUpdateSystem;
 
     @Override
     protected void processSystem() {
@@ -19,10 +19,10 @@ public class ChangeNotifierSystem extends BaseSystem {
     }
 
     private void mark(int entityId, Set<Component> components) {
-        networkSystem.addChanges(entityId, components);
+        entityUpdateSystem.addChanges(entityId, components);
     }
 
     private void remove(int entityId, Set<Class<? extends Component>> components) {
-        networkSystem.addRemoved(entityId, components);
+        entityUpdateSystem.addRemoved(entityId, components);
     }
 }
