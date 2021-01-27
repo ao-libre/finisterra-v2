@@ -1,6 +1,6 @@
 package notifications;
 
-import com.artemis.Position;
+import com.artemis.Armor;
 import network.EntityUpdateDTO;
 import org.junit.jupiter.api.Test;
 import world.ServerWorld;
@@ -41,7 +41,7 @@ public class MessengerTest {
         givenAnEntity();
         givenAnEntityWithPublicComponent();
 
-        whenEntityWithPositionChanges();
+        whenEntityPublicComponentChanges();
 
         thenEntityShouldReceivePositionChange();
     }
@@ -59,7 +59,7 @@ public class MessengerTest {
                 .map(EntityUpdateDTO.class::cast)
                 .filter(entityUpdateDTO -> entityUpdateDTO.getEntityId() == entityIdWithPublicComponent)
                 .anyMatch(entityUpdateDTO -> entityUpdateDTO.getToUpdate().stream()
-                        .anyMatch(component -> component.getClass().equals(Position.class))
+                        .anyMatch(component -> component.getClass().equals(Armor.class))
                 ));
     }
 
@@ -73,8 +73,8 @@ public class MessengerTest {
         world.process();
     }
 
-    private void whenEntityWithPositionChanges() {
-        E(entityId).positionX(5).positionY(4);
+    private void whenEntityPublicComponentChanges() {
+        E(entityId).armorIndex(1);
         world.process();
     }
 
@@ -90,7 +90,7 @@ public class MessengerTest {
 
     private void givenAnEntityWithPublicComponent() {
         entityIdWithPublicComponent = messenger.register("otherFakeId");
-        E(entityIdWithPublicComponent).positionX(5).positionY(5);
+        E(entityIdWithPublicComponent).positionX(5).positionY(5).armorIndex(1);
     }
 
     private void givenAWorld() {

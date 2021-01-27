@@ -1,9 +1,7 @@
 package com.artemis;
 
-import annotations.Public;
 import com.artemis.annotations.PooledWeaver;
 
-@Public
 @PooledWeaver
 public class Position extends Component {
     private int x;
