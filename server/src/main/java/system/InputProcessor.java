@@ -12,8 +12,8 @@ import java.util.function.Consumer;
 
 public class InputProcessor extends BaseSystem {
 
-    private final  Pool<InputEvent> inputEventPool = new Pool<>(InputEvent.class);
-    private final  Queue<InputEvent> events = new ConcurrentLinkedQueue<>();
+    private final Pool<InputEvent> inputEventPool = new Pool<>(InputEvent.class);
+    private final Queue<InputEvent> events = new ConcurrentLinkedQueue<>();
     private final Map<Class<? extends InputEvent>, Consumer<InputEvent>> processors;
 
     public InputProcessor(Map<Class<? extends InputEvent>, Consumer<InputEvent>> processors) {

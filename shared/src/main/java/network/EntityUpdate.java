@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class EntityUpdate extends Poolable {
-    private static final Pool<EntityUpdateDTO> DTO_POOL = new Pool<>(EntityUpdateDTO.class);
     private int entityId;
     private final Set<Class<? extends Component>> toRemove = new HashSet<>();
     private final Set<Component> toUpdate = new HashSet<>();
@@ -55,11 +54,11 @@ public class EntityUpdate extends Poolable {
     }
 
     public EntityUpdateDTO toDTO() {
-        EntityUpdateDTO entityUpdateDTO = DTO_POOL.obtain();
-        entityUpdateDTO.setEntityId(entityId);
-        entityUpdateDTO.setToUpdate(toUpdate.toArray(Component[]::new));
-        entityUpdateDTO.setToRemove(toRemove.toArray(Class[]::new));
-        return entityUpdateDTO;
+        EntityUpdateDTO dto = new EntityUpdateDTO();
+        dto.setEntityId(entityId);
+        dto.setToUpdate(toUpdate.toArray(Component[]::new));
+        dto.setToRemove(toRemove.toArray(Class[]::new));
+        return dto;
     }
 
     @Override

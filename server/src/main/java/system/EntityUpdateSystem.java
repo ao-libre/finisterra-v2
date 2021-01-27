@@ -5,11 +5,13 @@ import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.EBag;
 import com.artemis.annotations.Wire;
+import com.artemis.utils.Bag;
 import network.EntityUpdate;
 import network.EntityUpdateDTO;
 import utils.Pool;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -78,4 +80,17 @@ public class EntityUpdateSystem extends BaseSystem {
         });
     }
 
+    public void sendEntity(int receiver, int entity) {
+        Bag<Component> components = E(entity).entity().getComponents(new Bag<>());
+        Set<Component> publicComponents = new HashSet<>();
+        components.forEach(component -> {
+            if (component.getClass().isAnnotationPresent(Public.class)) {
+                publicComponents.add(component);
+            }
+        });
+        EntityUpdate update = createEntityUpdate(entity);
+        update.update(publicComponents);
+        outputProcessor.push(receiver, update.toDTO());
+        updatePool.free(update);
+    }
 }
