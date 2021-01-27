@@ -5,28 +5,31 @@ import com.artemis.utils.reflect.ClassReflection;
 import com.artemis.utils.reflect.ReflectionException;
 
 public class Pool<T extends Poolable> {
-	private final Bag<T> cache;
-	private Class<T> type;
+    private final Bag<T> cache;
+    private final Class<T> type;
 
-	public Pool(Class<T> type) {
-		this.type = type;
-		cache = new Bag<T>(type);
-	}
+    public Pool(Class<T> type) {
+        this(type, 128);
+    }
 
-	@SuppressWarnings("unchecked")
-	public <T extends Poolable> T obtain() {
-		try {
-			return (T) ((cache.size() > 0)
-				? cache.removeLast()
-				: ClassReflection.newInstance(type));
-		} catch (ReflectionException e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-	}
+    public Pool(Class<T> type, int size) {
+        this.type = type;
+        cache = new Bag<>(type, size);
+    }
 
-	public void free(T component) {
-		component.reset();
-		cache.add(component);
-	}
+    public T obtain() {
+        try {
+            return ((cache.size() > 0)
+                    ? cache.removeLast()
+                    : ClassReflection.newInstance(type));
+        } catch (ReflectionException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    public void free(T component) {
+        component.reset();
+        cache.add(component);
+    }
 
 }

@@ -1,12 +1,15 @@
 package network;
 
 import com.artemis.Component;
+import utils.Pool;
 import utils.Poolable;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-// TODO pooling
 public class EntityUpdate extends Poolable {
     private int entityId;
     private final Set<Class<? extends Component>> toRemove = new HashSet<>();
@@ -27,20 +30,35 @@ public class EntityUpdate extends Poolable {
         toRemove.removeAll(components.stream().map(Component::getClass).collect(Collectors.toSet()));
     }
 
+    public void remove(Class<? extends Component> component) {
+        toRemove.add(component);
+        toUpdate.removeIf(updatedComponent -> updatedComponent.getClass().equals(component));
+    }
+
     public void remove(Class<? extends Component>... components) {
-        remove(Arrays.asList(components));
+        for (int i = 0; i < components.length; i++) {
+            remove(components[i]);
+        }
     }
 
     public void remove(Collection<Class<? extends Component>> components) {
-        toRemove.addAll(components);
-        components.forEach(removedComponent
-                -> toUpdate.removeIf(updatedComponent -> updatedComponent.getClass().equals(removedComponent)));
+        components.forEach(this::remove);
+    }
+
+    public void setEntityId(int entityId) {
+        this.entityId = entityId;
+    }
+
+    public int getEntityId() {
+        return entityId;
     }
 
     public EntityUpdateDTO toDTO() {
-        return new EntityUpdateDTO(entityId,
-                toRemove.toArray(Class[]::new),
-                toUpdate.toArray(Component[]::new));
+        EntityUpdateDTO dto = new EntityUpdateDTO();
+        dto.setEntityId(entityId);
+        dto.setToUpdate(toUpdate.toArray(Component[]::new));
+        dto.setToRemove(toRemove.toArray(Class[]::new));
+        return dto;
     }
 
     @Override

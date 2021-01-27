@@ -1,6 +1,4 @@
-package server;
-
-import com.artemis.Component;
+package com.artemis;
 
 public class Foo extends Component {
     private int value;

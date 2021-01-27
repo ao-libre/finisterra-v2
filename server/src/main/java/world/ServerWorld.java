@@ -1,12 +1,11 @@
 package world;
 
 import com.artemis.*;
+import com.artemis.managers.GroupManager;
 import communication.Messenger;
+import net.mostlyoriginal.api.event.common.EventSystem;
 import network.RegisterEvent;
-import system.ChangeNotifierSystem;
-import system.EntityUpdateSystem;
-import system.InputProcessor;
-import system.OutputProcessor;
+import system.*;
 
 import java.util.HashMap;
 
@@ -21,12 +20,20 @@ public class ServerWorld extends World {
         static WorldConfiguration build() {
             WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
             return builder
-                    .with(new InputProcessor(new HashMap<>()))
+                    .with(new EventSystem())
                     .with(new SuperMapper())
+                    .with(new GroupManager())
+
+                    // LOGIC
+                    .with(new InputProcessor(new HashMap<>()))
+                    .with(new MovementSystem())
+                    .with(new ChunkSystem())
+
+                    // SYNC & SEND UPDATES
                     .with(new ChangeNotifierSystem())
                     .with(new EntityUpdateSystem())
-                    .with(new OutputProcessor())
                     .with(new ChangeRegistry())
+                    .with(new OutputProcessor())
                     .build();
         }
     }

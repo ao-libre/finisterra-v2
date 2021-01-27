@@ -11,6 +11,8 @@ public class EntityUpdateDTO extends Poolable {
     private Class<? extends Component>[] toRemove;
     private Component[] toUpdate;
 
+    public EntityUpdateDTO() {}
+
     public EntityUpdateDTO(int entityId) {
         this.entityId = entityId;
     }
@@ -23,6 +25,18 @@ public class EntityUpdateDTO extends Poolable {
 
     public int getEntityId() {
         return entityId;
+    }
+
+    void setEntityId(int entityId) {
+        this.entityId = entityId;
+    }
+
+    void setToRemove(Class<? extends Component>[] toRemove) {
+        this.toRemove = toRemove;
+    }
+
+    void setToUpdate(Component[] toUpdate) {
+        this.toUpdate = toUpdate;
     }
 
     public Collection<Class<? extends Component>> getToRemove() {
