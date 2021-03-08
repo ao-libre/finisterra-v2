@@ -1,0 +1,38 @@
+name: Build
+
+# Controls when the action will run.
+# Triggers the workflow on push or pull request
+on: [push, pull_request]
+
+jobs:
+  gradle:
+  
+    # Multiplatform build
+    strategy:
+      # Don't stop if any of the builds fail
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        
+    runs-on: ${{ matrix.os }}
+    
+    # Steps executed each iteration of the workflow
+    steps:
+      - name: Get source code from the repository
+        uses: actions/checkout@v2
+        
+      - name: Setup JDK
+        uses: actions/setup-java@v1.4.3
+        with:
+          java-version: 15
+
+      # Execute Gradle commands in GitHub Actions workflows
+      # => https://github.com/marketplace/actions/gradle-command
+      - name: Build project for ${{ matrix.os }}
+        uses: eskatos/gradle-command-action@v1.3.3
+        with:
+          gradle-version: current
+          wrapper-cache-enabled: true
+          dependencies-cache-enabled: false
+          configuration-cache-enabled: false
+          arguments: build
