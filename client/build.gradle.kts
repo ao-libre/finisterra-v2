@@ -2,7 +2,6 @@ import org.gradle.internal.os.OperatingSystem
 
 plugins {
     id("finisterra.artemis-conventions")
-    id("finisterra.native-conventions")
 }
 
 dependencies {

@@ -1,6 +1,5 @@
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import game.AOGame;
 
 import java.util.Locale;
