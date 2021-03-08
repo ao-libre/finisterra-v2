@@ -1,6 +1,5 @@
 plugins {
     id("finisterra.artemis-conventions")
-    id("finisterra.native-conventions")
 }
 
 dependencies {
