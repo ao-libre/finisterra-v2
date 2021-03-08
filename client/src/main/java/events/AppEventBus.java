@@ -1,6 +1,6 @@
 package events;
 
-import arc.util.Log;
+import com.artemis.generator.util.Log;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,7 +11,7 @@ public class AppEventBus {
     private final Map<AppEvent, Set<Runnable>> eventConsumers = new HashMap<>();
 
     public void fire(AppEvent event) {
-        Log.info("Event fire: @", event.name());
+//        Log.info("Event fire: @", event.name());
         eventConsumers.computeIfAbsent(event, (t) -> new HashSet<>()).forEach(Runnable::run);
     }
 

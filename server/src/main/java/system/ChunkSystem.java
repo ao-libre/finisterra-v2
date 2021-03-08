@@ -9,7 +9,7 @@ import java.util.Objects;
 @Wire
 public class ChunkSystem extends BaseSystem {
 
-    public static final String CHUNK_IDENTIFIER = "chunk::";
+    public static final String CHUNK_IDENTIFIER_PREFIX = "chunk::";
     private ChangeRegistry changeRegistry;
     private EntityUpdateSystem entityUpdateSystem;
 
@@ -37,14 +37,14 @@ public class ChunkSystem extends BaseSystem {
                 join(entity, currentChunkId);
             }
             if (oldChunkId != null) {
-                entity.removeGroup(oldChunkId);
+                exit(entity, oldChunkId);
             }
         }
     }
 
-    private void join(E entity, String chunkID) {
-        entity.group(chunkID);
-        EBag entities = getEntities(chunkID);
+    private void join(E entity, String chunkId) {
+        entity.group(chunkId);
+        EBag entities = getEntities(chunkId);
         entities.forEach(entityInChunk -> {
             if (entityInChunk.id() != entity.id()) {
                 entityUpdateSystem.sendEntity(entity.id(), entityInChunk.id());
@@ -52,10 +52,14 @@ public class ChunkSystem extends BaseSystem {
         });
     }
 
+    private void exit(E entity, String oldChunkId) {
+        entity.removeGroup(oldChunkId);
+    }
+
     String getChunkId(int entityId) {
         ImmutableBag<String> entityGroups = E.E(entityId).groups();
         for (int i = entityGroups.size() - 1; i >= 0; i--) {
-            if (entityGroups.get(i).startsWith(CHUNK_IDENTIFIER)) {
+            if (entityGroups.get(i).startsWith(CHUNK_IDENTIFIER_PREFIX)) {
                 return entityGroups.get(i);
             }
         }
@@ -63,7 +67,7 @@ public class ChunkSystem extends BaseSystem {
     }
 
     String getChunkId(Position position) {
-        return CHUNK_IDENTIFIER + position.getX() / 10 + "@" + position.getY() / 10;
+        return CHUNK_IDENTIFIER_PREFIX + position.getX() / 10 + "@" + position.getY() / 10;
     }
 
     public EBag getEntities(String chunkId) {

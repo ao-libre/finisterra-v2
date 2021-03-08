@@ -1,24 +1,18 @@
 package screens;
 
-import arc.Core;
-import arc.assets.AssetManager;
-import arc.scene.Scene;
-import arc.scene.ui.layout.Table;
+import com.badlogic.gdx.assets.AssetManager;
 import events.AppEvent;
 import events.AppEventBus;
 
-public class LoadingScreen extends Screen {
+public class LoadingScreen extends AOScreen {
     private final AssetManager assetManager;
-    Scene scene;
+
 
     private final AppEventBus appEventBus;
 
     public LoadingScreen(AppEventBus appEventBus, AssetManager assetManager) {
         this.assetManager = assetManager;
         this.appEventBus = appEventBus;
-        scene = new Scene();
-        Table table = new Table();
-        scene.add(table);
     }
 
     @Override
@@ -28,13 +22,12 @@ public class LoadingScreen extends Screen {
     }
 
     @Override
-    public void init() {
+    public void show() {
         this.appEventBus.fire(AppEvent.LOADING_STARTED);
-        Core.scene = scene;
     }
 
     @Override
-    public void update() {
+    public void render(float delta) {
         if (assetManager.update()) {
             this.appEventBus.fire(AppEvent.LOADING_FINISHED);
         }

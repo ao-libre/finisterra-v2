@@ -1,4 +1,4 @@
 package screens;
 
-public class LoginScreen extends Screen {
+public class LoginScreen extends AOScreen {
 }
