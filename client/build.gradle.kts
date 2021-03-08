@@ -8,9 +8,8 @@ plugins {
 dependencies {
     implementation(project(":client:components"))
     implementation(project(":shared"))
-    implementation(arcModule("arc-core"))
-    implementation(arcModule("backend-sdl"))
-    implementation(arcModule("natives-desktop"))
+    implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:1.9.14")
+    implementation("com.badlogicgames.gdx:gdx-platform:1.9.14:natives-desktop")
     implementation("com.artemis:artemis-odb:0.0.2-SNAPSHOT")
 }
 

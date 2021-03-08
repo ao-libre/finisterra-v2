@@ -24,7 +24,7 @@ nativeImage {
     dependsOn("generateNativeImageConfig")
     graalVmHome = System.getenv("JAVA_HOME")
     mainClass = "Launcher"
-    executableName = rootProject.name + "-" + project.name
+    executableName = rootProject.name + "-" + project.name + "-" + os.name
     arguments {
         if (os.isMacOsX) {
             add("-J-XstartOnFirstThread")

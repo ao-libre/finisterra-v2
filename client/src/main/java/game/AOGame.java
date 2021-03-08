@@ -1,24 +1,21 @@
 package game;
 
-import arc.ApplicationListener;
-import arc.Core;
-import arc.assets.AssetManager;
-import arc.graphics.Color;
-import arc.graphics.Gl;
-import arc.util.Log;
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import events.AppEventBus;
+import screens.AOScreen;
 import screens.LoadingScreen;
 import screens.LoginScreen;
-import screens.Screen;
 import screens.Screens;
 
 import static events.AppEvent.*;
 
-public class AOGame implements ApplicationListener {
+public class AOGame extends ApplicationAdapter {
 
     private final AppEventBus appEventBus;
     private final AssetManager assetManager;
-    private Screen screen;
+    private AOScreen screen;
 
     public AOGame() {
         appEventBus = new AppEventBus();
@@ -26,14 +23,14 @@ public class AOGame implements ApplicationListener {
     }
 
     @Override
-    public void init() {
-        Log.info("[AOGame] init()");
+    public void create() {
+//        Log.info("[AOGame] init()");
 
         //debug GL information
-        Log.info("[GL] Version: @", Core.graphics.getGLVersion());
-        Log.info("[GL] Max texture size: @", Gl.getInt(Gl.maxTextureSize));
-        Log.info("[GL] Using @ context.", Core.gl30 != null ? "OpenGL 3" : "OpenGL 2");
-        Log.info("[JAVA] Version: @", System.getProperty("java.version"));
+//        Log.info("[GL] Version: @", Core.graphics.getGLVersion());
+//        Log.info("[GL] Max texture size: @", Gl.getInt(Gl.maxTextureSize));
+//        Log.info("[GL] Using @ context.", Core.gl30 != null ? "OpenGL 3" : "OpenGL 2");
+//        Log.info("[JAVA] Version: @", System.getProperty("java.version"));
 
         registerEvents();
         setLoaders();
@@ -53,7 +50,7 @@ public class AOGame implements ApplicationListener {
     }
 
     private void toScreen(Screens screen) {
-        Log.info("[AOGame] Moving to screen @", screen.name());
+//        Log.info("[AOGame] Moving to screen @", screen.name());
         switch (screen) {
             case LOADING:
                 this.screen = new LoadingScreen(appEventBus, assetManager);
@@ -64,15 +61,14 @@ public class AOGame implements ApplicationListener {
             default:
                 break;
         }
-        this.screen.init();
-        assetManager.load(this.screen);
+        this.screen.show();
     }
 
     @Override
-    public void update() {
-        Core.graphics.clear(Color.black);
+    public void render() {
+//        Core.graphics.clear(Color.black);
         // Log.info("FPS: @", Core.graphics.getFramesPerSecond());
-        screen.update();
+        screen.render(Gdx.graphics.getDeltaTime());
     }
 
     @Override

@@ -15,6 +15,15 @@ jobs:
       - uses: DeLaGuardo/setup-graalvm@master
         with:
           graalvm-version: '21.0.0.java11'
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
       - name: Build Native Image
         shell: cmd
         run: >-
