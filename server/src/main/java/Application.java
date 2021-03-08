@@ -34,7 +34,7 @@ public class Application {
             } else {
                 // metric
             }
-            float startTime = System.currentTimeMillis();
+            long startTime = System.currentTimeMillis();
             world.process();
             time += System.currentTimeMillis() - startTime;
             if (runOnce) {
