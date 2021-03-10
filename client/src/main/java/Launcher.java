@@ -6,30 +6,15 @@ import java.util.Locale;
 
 public class Launcher {
     public static void main(String[] args) {
-        AOGame game = new AOGame();
 
-        new Lwjgl3Application(game, new Lwjgl3ApplicationConfiguration());
+        // Startup configuration
+        Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+        config.useOpenGL3(true, 3, 2);
+        config.setWindowedMode(1280, 720);
+        config.useVsync(false);
+        config.setMaximized(false);
 
-
-//        config.title = "Finisterrax";
-//        config.decorated = false;
-//        config.gl30 = false;
-//        config.vSyncEnabled = false;
-//        config.stencil = 1;
-//        config.maximized = true;
-//        if (shouldRunOnce(args)) {
-//            new Thread(() -> {
-//                try {
-//                    Thread.sleep(2000);
-//                    Application app = Core.app;
-//                    app.post(app::exit);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }).start();
-//            return;
-//        }
-//        new SdlApplication(game, config);
+        new Lwjgl3Application(new AOGame(), config);
     }
 
     private static boolean shouldRunOnce(String[] args) {

@@ -2,16 +2,20 @@ package game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
+import game.handlers.AssetManager;
 import events.AppEventBus;
 import screens.AOScreen;
 import screens.LoadingScreen;
 import screens.LoginScreen;
 import screens.Screens;
 
+import java.util.logging.Logger;
+
 import static events.AppEvent.*;
 
 public class AOGame extends ApplicationAdapter {
+
+    private static final Logger LOG = Logger.getLogger("AOGame");
 
     private final AppEventBus appEventBus;
     private final AssetManager assetManager;
@@ -24,13 +28,7 @@ public class AOGame extends ApplicationAdapter {
 
     @Override
     public void create() {
-//        Log.info("[AOGame] init()");
-
-        //debug GL information
-//        Log.info("[GL] Version: @", Core.graphics.getGLVersion());
-//        Log.info("[GL] Max texture size: @", Gl.getInt(Gl.maxTextureSize));
-//        Log.info("[GL] Using @ context.", Core.gl30 != null ? "OpenGL 3" : "OpenGL 2");
-//        Log.info("[JAVA] Version: @", System.getProperty("java.version"));
+        LOG.info("Initializing AOGame");
 
         registerEvents();
         setLoaders();
