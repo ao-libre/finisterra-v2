@@ -61,13 +61,12 @@ public class AOGame extends ApplicationAdapter {
             default:
                 break;
         }
+        this.screen.loadSync();
         this.screen.show();
     }
 
     @Override
     public void render() {
-//        Core.graphics.clear(Color.black);
-        // Log.info("FPS: @", Core.graphics.getFramesPerSecond());
         screen.render(Gdx.graphics.getDeltaTime());
     }
 

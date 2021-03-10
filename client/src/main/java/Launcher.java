@@ -1,5 +1,6 @@
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
 import game.AOGame;
 
 import java.util.Locale;
@@ -8,7 +9,11 @@ public class Launcher {
     public static void main(String[] args) {
         AOGame game = new AOGame();
 
-        new Lwjgl3Application(game, new Lwjgl3ApplicationConfiguration());
+        final Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+        config.setDecorated(false);
+        config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
+        config.useVsync(true);
+        new Lwjgl3Application(game, config);
 
 
 //        config.title = "Finisterrax";
