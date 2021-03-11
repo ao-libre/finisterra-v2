@@ -7,11 +7,13 @@ plugins {
 dependencies {
     implementation(project(":client:components"))
     implementation(project(":shared"))
-    implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:1.9.14")
-    implementation("com.badlogicgames.gdx:gdx-platform:1.9.14:natives-desktop")
-    implementation ("com.badlogicgames.gdx:gdx-freetype:1.9.14")
-    implementation("com.artemis:artemis-odb:0.0.2-SNAPSHOT")
-    implementation("org.reflections:reflections:0.9.12")
+	
+	implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:1.9.14")
+	implementation("com.badlogicgames.gdx:gdx-platform:1.9.14:natives-desktop")
+	implementation("com.badlogicgames.gdx:gdx-freetype:1.9.14")
+	implementation("com.badlogicgames.gdx:gdx-freetype-platform:1.9.14:natives-desktop")
+	implementation("com.artemis:artemis-odb:0.0.2-SNAPSHOT")
+	implementation("org.reflections:reflections:0.9.12")
 }
 
 val os: OperatingSystem = OperatingSystem.current()
