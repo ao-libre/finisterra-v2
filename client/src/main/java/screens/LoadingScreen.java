@@ -67,9 +67,6 @@ public class LoadingScreen extends AOScreen {
 
         // UI - Progress Bar
         Table table = new Table();
-        ProgressBar.ProgressBarStyle style = new ProgressBar.ProgressBarStyle();
-        style.background = new SpriteDrawable(new Sprite(progressBar));
-        style.knob = new SpriteDrawable(new Sprite(progressBarKnob));
         this.progress = WidgetFactory.createLoadingProgressBar();
         table.add(progress).expandX();
         this.mainTable.add(table).expand();
