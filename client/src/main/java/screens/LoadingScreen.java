@@ -1,6 +1,7 @@
 package screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -11,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.TimeUtils;
 import events.AppEvent;
 import events.AppEventBus;
-import game.handlers.AssetManager;
 import game.ui.WidgetFactory;
 import game.utils.Resources;
 import game.utils.Skins;
@@ -32,6 +32,10 @@ public class LoadingScreen extends AOScreen {
     private Texture progressBar;
     private Texture progressBarKnob;
     private ProgressBar progress;
+	
+	// UI - dependencies
+    private Texture backgroundImage = new Texture(Gdx.files.internal(Resources.GAME_IMAGES_PATH + "background.jpg"));
+    private SpriteDrawable backgroundSprite = new SpriteDrawable(new Sprite(backgroundImage));
 
     // Profiling & debugging
     private static final Logger LOG = Logger.getLogger("LoadingScreen");
@@ -41,28 +45,11 @@ public class LoadingScreen extends AOScreen {
         this.assetManager = assetManager;
         this.appEventBus = appEventBus;
     }
-
-    @Override
-    public void loadSync() {
-        // UI - Load Progress Bar assets
-        String progressBarPath = Resources.GAME_IMAGES_PATH + "progress-bar.png";
-        String progressBarKnobPath = Resources.GAME_IMAGES_PATH + "progress-bar-knob.png";
-        assetManager.load(progressBarPath, Texture.class);
-        assetManager.load(progressBarKnobPath, Texture.class);
-        assetManager.finishLoading();
-
-        progressBar = assetManager.get(progressBarPath);
-        progressBarKnob = assetManager.get(progressBarKnobPath);
-    }
-
+	
     protected void createUI() {
-        // UI - Background Picture
-        Texture backgroundImage = new Texture(Gdx.files.internal(Resources.GAME_IMAGES_PATH + "background.jpg"));
-        SpriteDrawable backgroundSprite = new SpriteDrawable(new Sprite(backgroundImage));
-
         // UI - Main Table
         this.mainTable.setFillParent(true);
-        this.mainTable.setBackground(backgroundSprite);
+        this.mainTable.setBackground(this.backgroundSprite);
         this.stage.addActor(mainTable);
 
         // UI - Progress Bar
@@ -86,7 +73,7 @@ public class LoadingScreen extends AOScreen {
     public void render(float delta) {
         if (assetManager.update()) {
 			// TODO: Esto causa "flickering" en la pantalla
-            //LOG.info("Loading time " + (TimeUtils.nanoTime() - this.start) * 1.0E-9 + "s");
+            LOG.info("Loading time " + Math.round((TimeUtils.nanoTime() - this.start) * 1.0E-9) + "s");
             //this.appEventBus.fire(AppEvent.LOADING_FINISHED);
         }
 
@@ -101,9 +88,7 @@ public class LoadingScreen extends AOScreen {
     @Override
     public void dispose() {
         super.dispose();
-
-        this.progressBar.dispose();
-        this.progressBarKnob.dispose();
+		this.backgroundImage.dispose();
     }
 
     /*
