@@ -11,32 +11,32 @@ import java.util.function.Supplier;
 
 public class WidgetFactory {
 
-    private static final Supplier<Skin> skin = () -> Skins.CURRENT.get();
+    private static final Supplier<Skin> SKIN = () -> Skins.CURRENT.get();
 
     public static Label createLabel(String text) {
-        return new Label(text, skin.get());
+        return new Label(text, SKIN.get());
     }
 
     public static Label createSpellLabel(String text) {
-        return new Label(text, skin.get(), Labels.SPELLS.name);
+        return new Label(text, SKIN.get(), Labels.SPELLS.name);
     }
 
     public static Label createUserLabel(String text) {
-        return new Label(text, skin.get(), Labels.USER.name);
+        return new Label(text, SKIN.get(), Labels.USER.name);
     }
 
     public static Label createDescLabel(String desc) {
-        return new Label(desc, skin.get(), Labels.DESC.name);
+        return new Label(desc, SKIN.get(), Labels.DESC.name);
     }
 
     // TODO refactor, handle colors and styles in skin.
     public static Label createConsoleLabel(String message, Color color) {
-        Label.LabelStyle labelStyle = new Label.LabelStyle(skin.get().getFont(Fonts.BIG.name), color);
+        Label.LabelStyle labelStyle = new Label.LabelStyle(SKIN.get().getFont(Fonts.BIG.name), color);
         return new Label(message, labelStyle);
     }
 
     public static Label createTitleLabel(String name) {
-        return new Label(name, skin.get(), Labels.TITLE.name);
+        return new Label(name, SKIN.get(), Labels.TITLE.name);
     }
 
     // TODO refactor, handle colors and styles in skin.
@@ -47,19 +47,19 @@ public class WidgetFactory {
     //}
 
     public static Label createBarLabel(String text) {
-        return new Label(text, skin.get(), Labels.BAR.name);
+        return new Label(text, SKIN.get(), Labels.BAR.name);
     }
 
     public static Label createStatLabel(String text) {
-        return new Label(text, skin.get(), Labels.STAT.name);
+        return new Label(text, SKIN.get(), Labels.STAT.name);
     }
 
     public static Label createFlippedLabel(String text) {
-        return new Label(text, skin.get(), Labels.FLIPPED.name);
+        return new Label(text, SKIN.get(), Labels.FLIPPED.name);
     }
 
     public static Label createTalkLabel(String text) {
-        return new Label(text, skin.get(), Labels.SPEECH_BUBBLE.name);
+        return new Label(text, SKIN.get(), Labels.SPEECH_BUBBLE.name);
     }
 
     public static Image createImage(Texture image) {
@@ -67,35 +67,35 @@ public class WidgetFactory {
     }
 
     public static Image createSeparatorImage() {
-        return new Image(skin.get().getDrawable(Images.SEPARATOR.name));
+        return new Image(SKIN.get().getDrawable(Images.SEPARATOR.name));
     }
 
     public static Image createBarSeparatorImage() {
-        return new Image(skin.get().getDrawable(Images.BAR_SEPARATOR.name));
+        return new Image(SKIN.get().getDrawable(Images.BAR_SEPARATOR.name));
     }
 
     public static Image createBarOverlayImage() {
-        return new Image(skin.get().getDrawable(Images.BAR_OVERLAY.name));
+        return new Image(SKIN.get().getDrawable(Images.BAR_OVERLAY.name));
     }
 
     public static Image createLineImage() {
-        return new Image(skin.get().getDrawable(Images.LINE.name));
+        return new Image(SKIN.get().getDrawable(Images.LINE.name));
     }
 
     public static Button createButton() {
-        return new Button(skin.get());
+        return new Button(SKIN.get());
     }
 
     public static TextButton createTextButton(String text) {
-        return new TextButton(text, skin.get());
+        return new TextButton(text, SKIN.get());
     }
 
     public static TextButton createMagicTextButton(String text) {
-        return new TextButton(text, skin.get(), TextButtons.MAGIC.name);
+        return new TextButton(text, SKIN.get(), TextButtons.MAGIC.name);
     }
 
     public static ImageButton createImageButton(ImageButtons button) {
-        return new ImageButton(skin.get(), button.name);
+        return new ImageButton(SKIN.get(), button.name);
     }
 
     public static ImageTextButton createImageInventoryExpandButton() {
@@ -103,11 +103,11 @@ public class WidgetFactory {
     }
 
     public static TextButton createImageInventoryButton() {
-        return new TextButton("Inventario", skin.get(), Windows.MAIN.name);
+        return new TextButton("Inventario", SKIN.get(), Windows.MAIN.name);
     }
 
     public static TextButton createImageSpellsButton() {
-        return new TextButton("Hechizos", skin.get(), Windows.MAIN.name);
+        return new TextButton("Hechizos", SKIN.get(), Windows.MAIN.name);
     }
 
 
@@ -117,7 +117,7 @@ public class WidgetFactory {
     }
 
     public static CheckBox createCheckBox(String text) {
-        return new CheckBox(text, skin.get());
+        return new CheckBox(text, SKIN.get());
     }
 
     public static ButtonGroup<?> createButtonGroup() {
@@ -125,37 +125,37 @@ public class WidgetFactory {
     }
 
     public static TextField createTextField(String text) {
-        return new TextField(text, skin.get());
+        return new TextField(text, SKIN.get());
     }
 
     public static TextArea createTextArea(String text) {
-        return new TextArea(text, skin.get());
+        return new TextArea(text, SKIN.get());
     }
 
     public static List<?> createList() {
-        return new List<>(skin.get());
+        return new List<>(SKIN.get());
     }
 
     public static SelectBox<?> createSelectBox() {
-        return new SelectBox<>(skin.get());
+        return new SelectBox<>(SKIN.get());
     }
 
     public static ProgressBar createProgressBar(ProgressBars bar) {
-        return new ProgressBar(0, 0, 1, false, skin.get(), bar.name);
+        return new ProgressBar(0, 0, 1, false, SKIN.get(), bar.name);
     }
 
     // TODO create loading progessbar
 
     public static ProgressBar createLoadingProgressBar() {
-        return new ProgressBar(1, 100, 1, false, skin.get(), ProgressBars.LOADING.name);
+        return new ProgressBar(1, 100, 1, false, SKIN.get(), ProgressBars.LOADING.name);
     }
 
     public static Slider createSlider() {
-        return new Slider(0, 0, 1, false, skin.get());
+        return new Slider(0, 0, 1, false, SKIN.get());
     }
 
     public static Window createWindow() {
-        return new Window("", skin.get());
+        return new Window("", SKIN.get());
     }
 
     public static Table createInventoryWindow() {
@@ -163,25 +163,25 @@ public class WidgetFactory {
     }
 
     public static Dialog createDialog(String title) {
-        return new Dialog(title, skin.get());
+        return new Dialog(title, SKIN.get());
     }
 
     public static Drawable createDrawable(String drawable) {
-        return skin.get().getDrawable(drawable);
+        return SKIN.get().getDrawable(drawable);
     }
 
     public static TextureRegion createRegionTexture(String text) {
-        return skin.get().getRegion(text);
+        return SKIN.get().getRegion(text);
     }
 
     public static Table createMainWindow() {
-        Table table = new Table(skin.get());
+        Table table = new Table(SKIN.get());
         table.setBackground(createDrawable("main-window"));
         return table;
     }
 
     public static Table createMainTable() {
-        Table table = new Table(skin.get());
+        Table table = new Table(SKIN.get());
         table.setBackground(createDrawable("main-background"));
         return table;
     }

@@ -1,7 +1,5 @@
 package events;
 
-import com.artemis.generator.util.Log;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
