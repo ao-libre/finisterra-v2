@@ -28,25 +28,4 @@ public class Colors {
     private static Color rgb(int r, int g, int b) {
         return rgba(r, g, b, 1);
     }
-/*
-    public static Color get(CombatMessage message) {
-        Color color = Color.WHITE.cpy();
-        switch (message.kind) {
-            case MAGIC:
-                color = Colors.MANA.cpy();
-                break;
-            case STAB:
-                color = Colors.GREY.cpy();
-                break;
-            case ENERGY:
-                color = Colors.YELLOW.cpy();
-                break;
-            case PHYSICAL:
-                color = Colors.RED.cpy();
-                break;
-        }
-
-        return color;
-    }
- */
 }

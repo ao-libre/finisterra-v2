@@ -19,7 +19,6 @@ dependencies {
 val os: OperatingSystem = OperatingSystem.current()
 
 sourceSets.main {
-    java.srcDir("src/main/java")
     resources.srcDir("assets")
 }
 
