@@ -85,8 +85,9 @@ public class LoadingScreen extends AOScreen {
     @Override
     public void render(float delta) {
         if (assetManager.update()) {
-            LOG.info("Loading time " + (TimeUtils.nanoTime() - this.start) * 1.0E-9 + "s");
-            this.appEventBus.fire(AppEvent.LOADING_FINISHED);
+			// TODO: Esto causa "flickering" en la pantalla
+            //LOG.info("Loading time " + (TimeUtils.nanoTime() - this.start) * 1.0E-9 + "s");
+            //this.appEventBus.fire(AppEvent.LOADING_FINISHED);
         }
 
         // display loading information
