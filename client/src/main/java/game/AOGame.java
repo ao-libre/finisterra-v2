@@ -2,7 +2,7 @@ package game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import game.handlers.AssetManager;
+import com.badlogic.gdx.assets.AssetManager;
 import events.AppEventBus;
 import screens.AOScreen;
 import screens.LoadingScreen;
