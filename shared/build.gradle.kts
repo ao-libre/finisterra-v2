@@ -2,7 +2,10 @@ plugins {
     id("finisterra.java-conventions")
 }
 
+val artemisVersion: String by project
+
 dependencies {
-    api(project(":shared:shared-components"))
-    implementation("com.artemis:artemis-odb:0.0.2-SNAPSHOT")
+    api(projects.shared.sharedComponents)
+	
+    implementation("com.artemis:artemis-odb:$artemisVersion")
 }

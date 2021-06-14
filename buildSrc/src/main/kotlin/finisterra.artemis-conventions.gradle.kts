@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    implementation("com.artemis:artemis-fluid-core:0.0.2-SNAPSHOT")
+    implementation("com.artemis:artemis-fluid-core:0.0.3-SNAPSHOT")
 }
 
 val fluidOutputDir = file("${buildDir}/generated-sources/fluid/")

@@ -2,14 +2,21 @@ plugins {
     id("finisterra.artemis-conventions")
 }
 
+val artemisVersion: String by project
+val artemisContribVersion: String by project
+val junitVersion: String by project
+val kryonetVersion: String by project
+
 dependencies {
-    api(project(":shared"))
-    implementation(project(":server:components"))
-    implementation("com.github.crykn:kryonet:2.22.7")
-    implementation("com.artemis:artemis-odb:0.0.2-SNAPSHOT")
-    implementation("net.mostlyoriginal.artemis-odb:contrib-eventbus:2.4.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
+    api(projects.shared)
+    implementation(projects.server.components)
+	
+    implementation("com.github.crykn:kryonet:$kryonetVersion")
+    implementation("com.artemis:artemis-odb:$artemisVersion")
+    implementation("net.mostlyoriginal.artemis-odb:contrib-eventbus:$artemisContribVersion")
+    
+	testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }
 
 application {

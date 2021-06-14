@@ -4,13 +4,13 @@ plugins {
 }
 
 dependencies {
-    implementation("com.artemis:artemis-odb:0.0.2-SNAPSHOT")
+    implementation("com.artemis:artemis-odb:0.0.3-SNAPSHOT")
 }
 
 tasks {
     weave {
         dependsOn("build")
-        classesDirs = files(sourceSets.main.get().java.outputDir)
+        classesDirs = files(sourceSets.main.get().java.classesDirectory)
         isEnableArtemisPlugin = true
         isEnablePooledWeaving = true
         isGenerateLinkMutators = true
