@@ -3,3 +3,4 @@ include("client", "server", "shared", "server:components", "client:components", 
 findProject(":shared:components")?.name = "shared-components"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+enableFeaturePreview("VERSION_CATALOGS")

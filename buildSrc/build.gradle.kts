@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.artemis:artemis-fluid-gradle-plugin:0.0.3-SNAPSHOT")
-    implementation("com.artemis:artemis-odb-gradle-plugin:0.0.3-SNAPSHOT")
-    implementation("com.artemis:artemis-fluid-core:0.0.3-SNAPSHOT")
+	implementation(libs.artemis.gradlePlugin)
+    implementation(libs.artemis.fluid.core)
+	implementation(libs.artemis.fluid.gradlePlugin)
 }

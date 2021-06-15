@@ -7,5 +7,5 @@ val artemisVersion: String by project
 dependencies {
     api(projects.shared.sharedComponents)
 	
-    implementation("com.artemis:artemis-odb:$artemisVersion")
+    implementation(libs.artemis.core)
 }

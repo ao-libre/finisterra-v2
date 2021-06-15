@@ -1,0 +1,26 @@
+[versions]
+artemis = "0.0.3-SNAPSHOT"
+artemisContrib = "2.4.0"
+kryonet = "2.22.7"
+libgdx = "1.10.0"
+junit = "5.4.1"
+reflections = "0.9.12"
+
+[libraries]
+artemis-core = { module = "com.artemis:artemis-odb", version.ref = "artemis" }
+artemis-gradlePlugin = { module = "com.artemis:artemis-odb-gradle-plugin", version.ref = "artemis" }
+artemis-contrib-eventbus = { module = "net.mostlyoriginal.artemis-odb:contrib-eventbus", version.ref = "artemisContrib" }
+artemis-fluid-core = { module = "com.artemis:artemis-fluid-core", version.ref = "artemis" }
+artemis-fluid-gradlePlugin = { module = "com.artemis:artemis-fluid-gradle-plugin", version.ref = "artemis" }
+
+gdx-backend = { module = "com.badlogicgames.gdx:gdx-backend-lwjgl3", version.ref = "libgdx" }
+gdx-platform = { module = "com.badlogicgames.gdx:gdx-platform", version.ref = "libgdx" }
+gdx-freetype-core = { module = "com.badlogicgames.gdx:gdx-freetype", version.ref = "libgdx" }
+gdx-freetype-platform = { module = "com.badlogicgames.gdx:gdx-freetype-platform", version.ref = "libgdx" }
+
+reflections = { module = "org.reflections:reflections", version.ref = "reflections" }
+
+kryonet = { module = "com.github.crykn:kryonet", version.ref = "kryonet" }
+
+jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
