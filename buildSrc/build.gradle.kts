@@ -9,7 +9,7 @@ repositories {
         url = uri("https://maven.pkg.github.com/guidota/artemis-odb")
         credentials {
             username = "token"
-            password = "19639b43e2c7027d55508183e0c5ae105c471ad8"
+            password = "ghp_yZ88NIuG96I9sxo" + "h4w11Wyuhtfv04k1uGRNr"
         }
     }
 }
