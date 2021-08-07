@@ -9,8 +9,9 @@ dependencies {
 	implementation(projects.shared)
 	
     implementation(libs.gdx.backend)
-	implementation(variantOf(libs.gdx.platform) { classifier("natives-desktop") })
 	implementation(libs.gdx.freetype.core)
+	implementation(libs.gdx.screenmanager)
+	implementation(variantOf(libs.gdx.platform) { classifier("natives-desktop") })
 	implementation(variantOf(libs.gdx.freetype.platform) { classifier("natives-desktop") })
 	
 	

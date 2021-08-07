@@ -27,8 +27,6 @@ public class LoadingScreen extends AOScreen {
     private final AppEventBus appEventBus;
 
     // UI components
-    private final Stage stage = new Stage();
-    private final Table mainTable = new Table(Skins.CURRENT.get());
     private Texture progressBar;
     private Texture progressBarKnob;
     private ProgressBar progress;
@@ -44,18 +42,27 @@ public class LoadingScreen extends AOScreen {
     public LoadingScreen(AppEventBus appEventBus, AssetManager assetManager) {
         this.assetManager = assetManager;
         this.appEventBus = appEventBus;
+		this.stage = new Stage(
+                new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera()),
+                new ArrayTextureSpriteBatch(2048, 10));
     }
 	
-    protected void createUI() {
+    @Override
+    protected void generateUserInterface() {
+        super.generateUserInterface();
+
+        // UI - Background Picture
+        Texture backgroundImage = new Texture(Gdx.files.internal(Resources.GAME_IMAGES_PATH + "background.jpg"));
+        SpriteDrawable backgroundSprite = new SpriteDrawable(new Sprite(backgroundImage));
+
         // UI - Main Table
-        this.mainTable.setFillParent(true);
-        this.mainTable.setBackground(this.backgroundSprite);
-        this.stage.addActor(mainTable);
+        super.generateUserInterface();
+        this.mainTable.setBackground(backgroundSprite);
 
         // UI - Progress Bar
         Table table = new Table();
         this.progress = WidgetFactory.createLoadingProgressBar();
-        table.add(progress).expandX();
+        table.add(progress).width(500).expandX();
         this.mainTable.add(table).expand();
 
         // Profiling
@@ -65,8 +72,8 @@ public class LoadingScreen extends AOScreen {
     @Override
     public void show() {
         this.appEventBus.fire(AppEvent.LOADING_STARTED);
-        createUI();
-        //loadAssets();
+        generateUserInterface();
+        loadAssets();
     }
 
     @Override
@@ -81,8 +88,7 @@ public class LoadingScreen extends AOScreen {
         float varProgress = assetManager.getProgress();
         this.progress.setValue(varProgress * 100);
 
-        this.stage.act(delta);
-        this.stage.draw();
+        super.render(delta);
     }
 
     @Override
@@ -97,7 +103,7 @@ public class LoadingScreen extends AOScreen {
 
     // Loads almost all the required assets
     private void loadAssets() {
-        loadAtlas();
+        // loadAtlas();
     }
 
     private void loadAtlas() {

@@ -5,6 +5,7 @@ kryonet = "2.22.7"
 libgdx = "1.10.0"
 junit = "5.4.1"
 reflections = "0.9.12"
+screenmanager = "0.6.7"
 
 [libraries]
 artemis-core = { module = "com.artemis:artemis-odb", version.ref = "artemis" }
@@ -17,10 +18,10 @@ gdx-backend = { module = "com.badlogicgames.gdx:gdx-backend-lwjgl3", version.ref
 gdx-platform = { module = "com.badlogicgames.gdx:gdx-platform", version.ref = "libgdx" }
 gdx-freetype-core = { module = "com.badlogicgames.gdx:gdx-freetype", version.ref = "libgdx" }
 gdx-freetype-platform = { module = "com.badlogicgames.gdx:gdx-freetype-platform", version.ref = "libgdx" }
-
-reflections = { module = "org.reflections:reflections", version.ref = "reflections" }
-
-kryonet = { module = "com.github.crykn:kryonet", version.ref = "kryonet" }
+gdx-screenmanager = { module = "com.github.crykn:libgdx-screenmanager", version.ref = "screenmanager" }
 
 jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+
+reflections = { module = "org.reflections:reflections", version.ref = "reflections" }
+kryonet = { module = "com.github.crykn:kryonet", version.ref = "kryonet" }
